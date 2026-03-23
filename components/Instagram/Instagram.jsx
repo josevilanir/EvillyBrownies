@@ -33,7 +33,13 @@ export default function Instagram() {
               whileHover={{ scale: 1.05 }}
               style={{ position: 'relative', height: '0', paddingBottom: '100%', borderRadius: '8px', overflow: 'hidden' }}
             >
-              <Image src={photo} fill style={{ objectFit: 'cover' }} alt="Instagram post" />
+              <Image 
+                src={photo} 
+                fill 
+                sizes="(max-width: 768px) 50vw, 25vw"
+                style={{ objectFit: 'cover' }} 
+                alt="Instagram post" 
+              />
             </motion.div>
           ))}
         </div>

@@ -58,6 +58,7 @@ export default function Menu() {
                 <Image 
                   src={product.image} 
                   fill 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   style={{ objectFit: 'cover' }} 
                   alt={product.title} 
                 />
