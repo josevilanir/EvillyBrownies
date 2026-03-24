@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { clsx } from 'clsx'
@@ -28,6 +29,14 @@ export default function TeamMemberCard({
 }: TeamMemberCardProps) {
   const fullName = `${firstName} ${lastName}`
   const isPositionRight = position === 'right'
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   return (
     <motion.div
@@ -64,8 +73,8 @@ export default function TeamMemberCard({
         className="team-member-row"
         style={{
           display: 'flex',
-          flexDirection: isPositionRight ? 'row-reverse' : 'row',
-          alignItems: 'center',
+          flexDirection: isMobile ? 'column' : isPositionRight ? 'row-reverse' : 'row',
+          alignItems: isMobile ? 'stretch' : 'center',
         }}
       >
         {/* Portrait */}
@@ -76,8 +85,8 @@ export default function TeamMemberCard({
           className="team-member-portrait"
           style={{
             position: 'relative',
-            width: 360,
-            height: 500,
+            width: isMobile ? '100%' : 360,
+            height: isMobile ? 260 : 500,
             flexShrink: 0,
             overflow: 'hidden',
           }}
@@ -114,13 +123,14 @@ export default function TeamMemberCard({
           className="team-member-info"
           style={{
             position: 'relative',
-            left: isPositionRight ? 32 : -32,
+            left: isMobile ? 0 : isPositionRight ? 32 : -32,
             zIndex: 2,
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            gap: '3rem',
+            gap: isMobile ? '1.5rem' : '3rem',
             alignItems: isPositionRight ? 'flex-end' : 'flex-start',
+            paddingTop: isMobile ? '1.5rem' : 0,
           }}
         >
           {/* Name */}
