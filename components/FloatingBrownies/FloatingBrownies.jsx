@@ -132,69 +132,84 @@ export default function FloatingBrownies() {
   const { scrollY }   = useScroll();
 
   useEffect(() => {
-    const compute = () => {
-      if (typeof window === 'undefined') return;
+    let measureRafId = null;
+    let resizeTimer  = null;
 
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const isMobile = vw < 768;
+    const measure = () => {
+      // Cancel any pending measurement RAF before scheduling a new one
+      if (measureRafId) cancelAnimationFrame(measureRafId);
 
-      if (isMobile) {
-        // Mobile: float-only mode — no scroll targeting, just organic bob in Hero
+      // RAF guarantees we read positions AFTER the browser has reflowed
+      measureRafId = requestAnimationFrame(() => {
+        if (typeof window === 'undefined') return;
+
+        const vw       = window.innerWidth;
+        const vh       = window.innerHeight;
+        const isMobile = vw < 768;
+
+        if (isMobile) {
+          // Mobile: float-only mode — no scroll targeting, just organic bob in Hero
+          const initials = [
+            { x: vw * 0.05, y: vh * 0.08, size: 72, rotate: -10, floatPhase: 0,   floatSpeed: 0.62, floatAmp: 12 },
+            { x: vw * 0.68, y: vh * 0.35, size: 62, rotate:   6, floatPhase: 2.1, floatSpeed: 0.80, floatAmp:  9 },
+            { x: vw * 0.10, y: vh * 0.58, size: 54, rotate:  -3, floatPhase: 3.8, floatSpeed: 0.52, floatAmp: 10 },
+          ];
+          // Dummy targets far off-screen — scrollStart ensures progress stays 0 permanently
+          const targets = initials.map(init => ({ docX: init.x, docY: 99999, size: init.size }));
+          setCfg({ initials, targets, scrollStart: 999999, scrollEnd: 9999999 });
+          return;
+        }
+
+        const hero   = document.getElementById('hero');
+        const thumbs = document.querySelectorAll('[data-menu-thumbnail]');
+        if (!hero || thumbs.length < 3) return;
+
+        const scrollNow     = window.scrollY;
+        const scrollX       = window.scrollX;
+        const heroRect      = hero.getBoundingClientRect();
+        const heroDocBottom = heroRect.bottom + scrollNow;
+
+        // Initial positions — organic triangular spread across right half of viewport
         const initials = [
-          { x: vw * 0.05, y: vh * 0.08, size: 72, rotate: -10, floatPhase: 0,   floatSpeed: 0.62, floatAmp: 12 },
-          { x: vw * 0.68, y: vh * 0.35, size: 62, rotate:   6, floatPhase: 2.1, floatSpeed: 0.80, floatAmp:  9 },
-          { x: vw * 0.10, y: vh * 0.58, size: 54, rotate:  -3, floatPhase: 3.8, floatSpeed: 0.52, floatAmp: 10 },
+          { x: vw * 0.54, y: vh * 0.07, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
+          { x: vw * 0.73, y: vh * 0.38, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
+          { x: vw * 0.52, y: vh * 0.60, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
         ];
-        // Dummy targets far off-screen — scrollStart ensures progress stays 0 permanently
-        const targets = initials.map(init => ({ docX: init.x, docY: 99999, size: init.size }));
-        setCfg({ initials, targets, scrollStart: 999999, scrollEnd: 9999999 });
-        return;
-      }
 
-      const hero   = document.getElementById('hero');
-      const thumbs = document.querySelectorAll('[data-menu-thumbnail]');
-      if (!hero || thumbs.length < 3) return;
+        // Target positions — document-absolute coords of each thumbnail
+        const targets = Array.from(thumbs).map((el) => {
+          const r = el.getBoundingClientRect();
+          return {
+            docX: r.left + scrollX,
+            docY: r.top  + scrollNow,
+            size: r.width,
+          };
+        });
 
-      const scrollNow      = window.scrollY;
-      const heroRect       = hero.getBoundingClientRect();
-      const heroDocBottom  = heroRect.bottom + scrollNow;
+        // Animation window: start at 35% of hero scroll, end when first thumbnail is ~35% from viewport bottom
+        const scrollStart = heroDocBottom * 0.35;
+        const scrollEnd   = Math.max(targets[0].docY - vh * 0.35, scrollStart + 300);
 
-      // Initial positions — organic triangular spread across right half of viewport
-      const initials = [
-        // Upper-right — largest, dominant visual anchor
-        { x: vw * 0.54, y: vh * 0.07, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
-        // Mid far-right — medium, pushes outward for depth
-        { x: vw * 0.73, y: vh * 0.38, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
-        // Lower-right — smallest, closes the triangle
-        { x: vw * 0.52, y: vh * 0.60, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
-      ];
-
-      // Target positions — document-absolute coords of each thumbnail
-      const targets = Array.from(thumbs).map((el) => {
-        const r = el.getBoundingClientRect();
-        return {
-          docX: r.left,
-          docY: r.top + scrollNow,
-          size: r.width,
-        };
+        setCfg({ initials, targets, scrollStart, scrollEnd });
       });
-
-      // Animation window: start at 35% of hero scroll, end when first thumbnail is ~35% from viewport bottom
-      const scrollStart = heroDocBottom * 0.35;
-      const scrollEnd   = Math.max(targets[0].docY - vh * 0.35, scrollStart + 300);
-
-      setCfg({ initials, targets, scrollStart, scrollEnd });
     };
 
-    compute();
-    // Re-compute after images/fonts have settled
-    const timer = setTimeout(compute, 800);
-    window.addEventListener('resize', compute);
+    // Debounced resize handler — waits 150ms for layout to stabilise before measuring
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(measure, 150);
+    };
+
+    measure();
+    // Re-measure after images/fonts have settled
+    const settleTimer = setTimeout(measure, 800);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', compute);
+      if (measureRafId) cancelAnimationFrame(measureRafId);
+      clearTimeout(settleTimer);
+      clearTimeout(resizeTimer);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
