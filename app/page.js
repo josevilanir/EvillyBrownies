@@ -1,6 +1,7 @@
 import Header from '../components/Header/Header';
 import Hero from '../components/Hero/Hero';
 import Menu from '../components/Menu/Menu';
+import FloatingBrownies from '../components/FloatingBrownies/FloatingBrownies';
 import Stats from '../components/Stats/Stats';
 import About from '../components/About/About';
 import Instagram from '../components/Instagram/Instagram';
@@ -13,6 +14,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <FloatingBrownies />
         <Menu />
         <Stats />
         <About />

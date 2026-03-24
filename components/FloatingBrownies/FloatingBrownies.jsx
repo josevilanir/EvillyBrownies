@@ -1,0 +1,220 @@
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import { useMotionValue, useSpring, useScroll, motion } from 'framer-motion';
+import Image from 'next/image';
+
+const PRODUCTS = [
+  { src: '/images/brownie-pote.png',        alt: 'Brownie no Pote' },
+  { src: '/images/brownie-tradicional.png', alt: 'Brownie Tradicional' },
+  { src: '/images/mini-brownie.png',        alt: 'Mini Brownie' },
+];
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+// ── Single animated image ──────────────────────────────────────────────────────
+function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay }) {
+  // Raw values — RAF writes to these
+  const xRaw      = useMotionValue(initial.x);
+  const yRaw      = useMotionValue(initial.y);
+  const sizeRaw   = useMotionValue(initial.size);
+  const rotateRaw = useMotionValue(initial.rotate);
+  const opMv      = useMotionValue(0); // opacity stays raw for precise fade timing
+
+  // Spring-smoothed — DOM reads these for organic Apple-like feel
+  const SPRING   = { stiffness: 80, damping: 22, mass: 1 };
+  const xMv      = useSpring(xRaw,      SPRING);
+  const yMv      = useSpring(yRaw,      SPRING);
+  const sizeMv   = useSpring(sizeRaw,   SPRING);
+  const rotateMv = useSpring(rotateRaw, SPRING);
+
+  const startTimeRef = useRef(null);
+  const rafRef       = useRef(null);
+  const aliveRef     = useRef(true);
+
+  useEffect(() => {
+    aliveRef.current = true;
+
+    // Fade-in staggered by entryDelay
+    const fadeTimer = setTimeout(() => {
+      if (aliveRef.current) opMv.set(0.93);
+    }, entryDelay);
+
+    const tick = (timestamp) => {
+      if (!aliveRef.current) return;
+
+      const s        = scrollY.get();
+      const span     = Math.max(1, scrollEnd - scrollStart);
+      const progress = Math.max(0, Math.min(1, (s - scrollStart) / span));
+      const eased    = easeInOutCubic(progress);
+
+      // Bob weight: 1.0 at rest, smoothly fades to 0 by 12% scroll progress
+      const bobWeight = Math.max(0, 1 - progress / 0.12);
+
+      // Continuous clock — never reset so bob blends seamlessly into scroll
+      if (startTimeRef.current === null) startTimeRef.current = timestamp;
+      const t = (timestamp - startTimeRef.current) / 1000 + initial.floatPhase;
+
+      // Bob contribution scaled by weight
+      const bobX      = Math.sin(t * initial.floatSpeed * 0.6) * 4            * bobWeight;
+      const bobY      = Math.sin(t * initial.floatSpeed)       * initial.floatAmp * bobWeight;
+      const bobRotate = Math.sin(t * 0.44) * 2.5                              * bobWeight;
+
+      // Scroll flight target
+      const targetX = target.docX;
+      const targetY = target.docY - s;
+
+      // Blended position = scroll lerp + bob offset
+      xRaw.set(lerp(initial.x, targetX, eased) + bobX);
+      yRaw.set(lerp(initial.y, targetY, eased) + bobY);
+      sizeRaw.set(lerp(initial.size, target.size, eased));
+      rotateRaw.set(lerp(initial.rotate, 0, eased) + bobRotate);
+
+      // Opacity: hold near 1 while flying, fade out on final approach so real thumbnail takes over
+      if (progress < 0.75) {
+        opMv.set(lerp(0.93, 1.0, progress / 0.75));
+      } else {
+        opMv.set(lerp(1.0, 0, (progress - 0.75) / 0.25));
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      aliveRef.current = false;
+      clearTimeout(fadeTimer);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [scrollY, initial, target, scrollStart, scrollEnd, entryDelay]); // eslint-disable-line
+
+  return (
+    <motion.div
+      style={{
+        position:      'fixed',
+        left:          xMv,
+        top:           yMv,
+        width:         sizeMv,
+        height:        sizeMv,
+        opacity:       opMv,
+        rotate:        rotateMv,
+        pointerEvents: 'none',
+        zIndex:        6,
+        willChange:    'transform, opacity',
+        filter:        'drop-shadow(0 10px 22px rgba(26, 16, 10, 0.2)) drop-shadow(0 3px 7px rgba(26, 16, 10, 0.1))',
+      }}
+    >
+      <Image
+        src={src}
+        width={150}
+        height={150}
+        alt={alt}
+        style={{
+          objectFit: 'contain',
+          width: '100%',
+          height: '100%',
+          display: 'block',
+        }}
+      />
+    </motion.div>
+  );
+}
+
+// ── Orchestrator ───────────────────────────────────────────────────────────────
+export default function FloatingBrownies() {
+  const [cfg, setCfg] = useState(null);
+  const { scrollY }   = useScroll();
+
+  useEffect(() => {
+    const compute = () => {
+      if (typeof window === 'undefined') return;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const isMobile = vw < 768;
+
+      if (isMobile) {
+        // Mobile: float-only mode — no scroll targeting, just organic bob in Hero
+        const initials = [
+          { x: vw * 0.05, y: vh * 0.08, size: 72, rotate: -10, floatPhase: 0,   floatSpeed: 0.62, floatAmp: 12 },
+          { x: vw * 0.68, y: vh * 0.35, size: 62, rotate:   6, floatPhase: 2.1, floatSpeed: 0.80, floatAmp:  9 },
+          { x: vw * 0.10, y: vh * 0.58, size: 54, rotate:  -3, floatPhase: 3.8, floatSpeed: 0.52, floatAmp: 10 },
+        ];
+        // Dummy targets far off-screen — scrollStart ensures progress stays 0 permanently
+        const targets = initials.map(init => ({ docX: init.x, docY: 99999, size: init.size }));
+        setCfg({ initials, targets, scrollStart: 999999, scrollEnd: 9999999 });
+        return;
+      }
+
+      const hero   = document.getElementById('hero');
+      const thumbs = document.querySelectorAll('[data-menu-thumbnail]');
+      if (!hero || thumbs.length < 3) return;
+
+      const scrollNow      = window.scrollY;
+      const heroRect       = hero.getBoundingClientRect();
+      const heroDocBottom  = heroRect.bottom + scrollNow;
+
+      // Initial positions — organic triangular spread across right half of viewport
+      const initials = [
+        // Upper-right — largest, dominant visual anchor
+        { x: vw * 0.54, y: vh * 0.07, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
+        // Mid far-right — medium, pushes outward for depth
+        { x: vw * 0.73, y: vh * 0.38, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
+        // Lower-right — smallest, closes the triangle
+        { x: vw * 0.52, y: vh * 0.60, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
+      ];
+
+      // Target positions — document-absolute coords of each thumbnail
+      const targets = Array.from(thumbs).map((el) => {
+        const r = el.getBoundingClientRect();
+        return {
+          docX: r.left,
+          docY: r.top + scrollNow,
+          size: r.width,
+        };
+      });
+
+      // Animation window: start at 35% of hero scroll, end when first thumbnail is ~35% from viewport bottom
+      const scrollStart = heroDocBottom * 0.35;
+      const scrollEnd   = Math.max(targets[0].docY - vh * 0.35, scrollStart + 300);
+
+      setCfg({ initials, targets, scrollStart, scrollEnd });
+    };
+
+    compute();
+    // Re-compute after images/fonts have settled
+    const timer = setTimeout(compute, 800);
+    window.addEventListener('resize', compute);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', compute);
+    };
+  }, []);
+
+  if (!cfg) return null;
+
+  return (
+    <>
+      {PRODUCTS.map((p, i) => (
+        <FloatingImage
+          key={p.src}
+          src={p.src}
+          alt={p.alt}
+          initial={cfg.initials[i]}
+          target={cfg.targets[i]}
+          scrollY={scrollY}
+          scrollStart={cfg.scrollStart}
+          scrollEnd={cfg.scrollEnd}
+          entryDelay={350 + i * 180}
+        />
+      ))}
+    </>
+  );
+}
