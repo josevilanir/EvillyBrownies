@@ -18,7 +18,7 @@ function lerp(a, b, t) {
 }
 
 // ── Single animated image ──────────────────────────────────────────────────────
-function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay }) {
+function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay, pinPosition }) {
   // Raw values — RAF writes to these
   const xRaw      = useMotionValue(initial.x);
   const yRaw      = useMotionValue(initial.y);
@@ -69,17 +69,27 @@ function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scroll
       const targetX = target.docX;
       const targetY = target.docY - s;
 
-      // Blended position = scroll lerp + bob offset
-      xRaw.set(lerp(initial.x, targetX, eased) + bobX);
-      yRaw.set(lerp(initial.y, targetY, eased) + bobY);
-      sizeRaw.set(lerp(initial.size, target.size, eased));
-      rotateRaw.set(lerp(initial.rotate, 0, eased) + bobRotate);
-
-      // Opacity: hold near 1 while flying, fade out on final approach so real thumbnail takes over
-      if (progress < 0.75) {
-        opMv.set(lerp(0.93, 1.0, progress / 0.75));
+      if (pinPosition) {
+        // Mobile: stay at initial position, just bob + fade out past hero
+        xRaw.set(initial.x + bobX);
+        yRaw.set(initial.y + bobY);
+        sizeRaw.set(initial.size);
+        rotateRaw.set(initial.rotate + bobRotate);
+        const fadeProgress = Math.max(0, Math.min(1, (s - scrollStart) / Math.max(1, scrollEnd - scrollStart)));
+        opMv.set((1 - fadeProgress) * 0.93);
       } else {
-        opMv.set(lerp(1.0, 0, (progress - 0.75) / 0.25));
+        // Desktop: fly toward menu thumbnail
+        xRaw.set(lerp(initial.x, targetX, eased) + bobX);
+        yRaw.set(lerp(initial.y, targetY, eased) + bobY);
+        sizeRaw.set(lerp(initial.size, target.size, eased));
+        rotateRaw.set(lerp(initial.rotate, 0, eased) + bobRotate);
+
+        // Opacity: hold near 1 while flying, fade out on final approach so real thumbnail takes over
+        if (progress < 0.75) {
+          opMv.set(lerp(0.93, 1.0, progress / 0.75));
+        } else {
+          opMv.set(lerp(1.0, 0, (progress - 0.75) / 0.25));
+        }
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -148,15 +158,24 @@ export default function FloatingBrownies() {
         const isMobile = vw < 768;
 
         if (isMobile) {
-          // Mobile: float-only mode — no scroll targeting, just organic bob in Hero
+          // Mobile: bob inside Hero, then fade out as user scrolls past it
           const initials = [
             { x: vw * 0.05, y: vh * 0.08, size: 72, rotate: -10, floatPhase: 0,   floatSpeed: 0.62, floatAmp: 12 },
             { x: vw * 0.68, y: vh * 0.35, size: 62, rotate:   6, floatPhase: 2.1, floatSpeed: 0.80, floatAmp:  9 },
             { x: vw * 0.10, y: vh * 0.58, size: 54, rotate:  -3, floatPhase: 3.8, floatSpeed: 0.52, floatAmp: 10 },
           ];
-          // Dummy targets far off-screen — scrollStart ensures progress stays 0 permanently
-          const targets = initials.map(init => ({ docX: init.x, docY: 99999, size: init.size }));
-          setCfg({ initials, targets, scrollStart: 999999, scrollEnd: 9999999 });
+          const heroEl = document.getElementById('hero');
+          const heroBottom = heroEl
+            ? heroEl.getBoundingClientRect().bottom + window.scrollY
+            : vh * 1.1;
+          const targets = initials.map(init => ({ docX: init.x, docY: init.y, size: init.size }));
+          setCfg({
+            initials,
+            targets,
+            scrollStart: heroBottom * 0.45,
+            scrollEnd:   heroBottom,
+            pinPosition: true,
+          });
           return;
         }
 
@@ -228,6 +247,7 @@ export default function FloatingBrownies() {
           scrollStart={cfg.scrollStart}
           scrollEnd={cfg.scrollEnd}
           entryDelay={350 + i * 180}
+          pinPosition={cfg.pinPosition ?? false}
         />
       ))}
     </>
