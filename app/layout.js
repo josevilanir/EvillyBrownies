@@ -5,6 +5,11 @@ export const metadata = {
   description: 'Brownies artesanais feitos com carinho e chocolate de verdade. Experimente a casquinha crocante e o recheio suculento.',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
