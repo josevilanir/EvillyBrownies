@@ -210,6 +210,13 @@ section[id] {
   display: block;
 }
 
+/* ── Hero sidebars — only show when there's enough margin space ── */
+.hero-sidebars { display: none; }
+
+@media (min-width: 1120px) {
+  .hero-sidebars { display: flex; }
+}
+
 /* ── Mobile ── */
 @media (max-width: 768px) {
   .nav-desktop { display: none !important; }
@@ -246,7 +253,25 @@ section[id] {
   }
 
   .section { padding: 5rem 0; }
-  .hero-sidebars { display: none !important; }
+
+  /* TeamMemberCard — stack vertically, remove overflow offset */
+  .team-member-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .team-member-portrait {
+    width: 100% !important;
+    height: 280px !important;
+  }
+  .team-member-info {
+    left: 0 !important;
+    right: 0 !important;
+    padding-top: 1.5rem !important;
+  }
+
+  /* Footer — reduce top padding */
+  .footer-inner { padding-top: 4rem !important; }
+
 }
 
 @media (max-width: 480px) {
