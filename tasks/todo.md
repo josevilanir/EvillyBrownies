@@ -34,3 +34,7 @@
 - [x] Integrate images provided by the user (`brownie-ours.png` and `brownie-others.png`) <!-- id: 41 -->
 - [x] Create the `Comparison` section component and add it before Instagram <!-- id: 42 -->
 - [x] Verify UI and functionality <!-- id: 43 -->
+
+## Brand Asset Update
+- [x] Replace default Vercel favicon with brownie icon <!-- id: 50 -->
+- [x] Verify icon in development server <!-- id: 51 -->
