@@ -8,7 +8,7 @@ export default function Footer() {
       backgroundColor: '#2d2621',
       borderTop: '1px solid rgba(166, 124, 82, 0.15)',
     }}>
-      <div style={{ color: '#ece5d8', padding: 'var(--spacing-xl) 0 var(--spacing-md)' }}>
+      <div className="footer-inner" style={{ color: '#ece5d8', padding: 'var(--spacing-xl) 0 var(--spacing-md)' }}>
         <div className="container">
 
           {/* CTA block */}

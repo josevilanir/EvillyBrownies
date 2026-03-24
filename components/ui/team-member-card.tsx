@@ -61,6 +61,7 @@ export default function TeamMemberCard({
 
       {/* Main row */}
       <div
+        className="team-member-row"
         style={{
           display: 'flex',
           flexDirection: isPositionRight ? 'row-reverse' : 'row',
@@ -72,6 +73,7 @@ export default function TeamMemberCard({
           initial={{ opacity: 0, scale: 0.95, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="team-member-portrait"
           style={{
             position: 'relative',
             width: 360,
@@ -109,6 +111,7 @@ export default function TeamMemberCard({
           initial={{ opacity: 0, x: isPositionRight ? -40 : 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="team-member-info"
           style={{
             position: 'relative',
             left: isPositionRight ? 32 : -32,

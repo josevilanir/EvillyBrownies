@@ -47,13 +47,16 @@ function MenuItem({ product, index }) {
       }}
     >
       {/* Thumbnail */}
-      <div style={{
-        width: '52px',
-        height: '52px',
-        position: 'relative',
-        flexShrink: 0,
-        overflow: 'hidden',
-      }}>
+      <div
+        data-menu-thumbnail={index}
+        style={{
+          width: '52px',
+          height: '52px',
+          position: 'relative',
+          flexShrink: 0,
+          overflow: 'hidden',
+        }}
+      >
         <motion.div
           animate={{ scale: hovered ? 1 : 0.85, opacity: hovered ? 1 : 0.5 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
