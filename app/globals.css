@@ -272,6 +272,8 @@ section[id] {
   /* Footer — reduce top padding */
   .footer-inner { padding-top: 4rem !important; }
 
+  /* Hamburger — bigger touch target */
+  .nav-hamburger { min-width: 44px; min-height: 44px; justify-content: center; }
 }
 
 @media (max-width: 480px) {
