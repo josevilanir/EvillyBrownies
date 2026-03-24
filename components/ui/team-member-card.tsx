@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { clsx } from 'clsx'
@@ -29,29 +28,13 @@ export default function TeamMemberCard({
 }: TeamMemberCardProps) {
   const fullName = `${firstName} ${lastName}`
   const isPositionRight = position === 'right'
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const check = () => {
-      const w = window.innerWidth
-      const isPortrait = window.matchMedia('(orientation: portrait)').matches
-      setIsMobile(w <= 600 || (w < 768 && isPortrait))
-    }
-    check()
-    window.addEventListener('resize', check)
-    window.matchMedia('(orientation: portrait)').addEventListener('change', check)
-    return () => {
-      window.removeEventListener('resize', check)
-      window.matchMedia('(orientation: portrait)').removeEventListener('change', check)
-    }
-  }, [])
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      style={{ position: 'relative', margin: '4rem 0', padding: isMobile ? '0 1.2rem' : 0 }}
+      style={{ position: 'relative', margin: '4rem 0' }}
       className={className}
     >
       {/* Job position label */}
@@ -81,8 +64,8 @@ export default function TeamMemberCard({
         className="team-member-row"
         style={{
           display: 'flex',
-          flexDirection: isMobile ? 'column' : isPositionRight ? 'row-reverse' : 'row',
-          alignItems: isMobile ? 'stretch' : 'center',
+          flexDirection: isPositionRight ? 'row-reverse' : 'row',
+          alignItems: 'center',
         }}
       >
         {/* Portrait */}
@@ -93,9 +76,8 @@ export default function TeamMemberCard({
           className="team-member-portrait"
           style={{
             position: 'relative',
-            width: isMobile ? '100%' : 360,
-            height: isMobile ? 380 : 500,
-            maxHeight: isMobile ? 380 : 'none',
+            width: 360,
+            height: 500,
             flexShrink: 0,
             overflow: 'hidden',
           }}
@@ -124,29 +106,29 @@ export default function TeamMemberCard({
           />
         </motion.div>
 
-        {/* Info block — pulled left to overlap image edge */}
+        {/* Info block — pulled to overlap image edge */}
         <motion.div
           initial={{ opacity: 0, x: isPositionRight ? -40 : 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="team-member-info"
           style={{
-            position: isMobile ? 'static' : 'relative',
-            left: isMobile ? 'auto' : isPositionRight ? 32 : -32,
+            position: 'relative',
+            left: isPositionRight ? 32 : -32,
             zIndex: 2,
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            gap: isMobile ? '1.5rem' : '3rem',
+            gap: '3rem',
             alignItems: isPositionRight ? 'flex-end' : 'flex-start',
-            paddingTop: isMobile ? '1.5rem' : 0,
           }}
         >
           {/* Name */}
           <p
+            className="team-member-name"
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: isMobile ? 'clamp(2rem, 7vw, 3rem)' : 'clamp(2.5rem, 5vw, 4rem)',
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
               lineHeight: 1.05,
               letterSpacing: '-0.02em',
               color: 'var(--text-main)',
@@ -210,10 +192,11 @@ export default function TeamMemberCard({
 
             {/* Bio */}
             <p
+              className="team-member-bio"
               style={{
                 flex: 1,
-                fontSize: isMobile ? '0.85rem' : '0.9rem',
-                lineHeight: isMobile ? 1.7 : 2,
+                fontSize: '0.9rem',
+                lineHeight: 2,
                 color: 'var(--text-light)',
                 fontFamily: 'var(--font-sans)',
                 textAlign: isPositionRight ? 'right' : 'left',

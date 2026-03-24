@@ -261,12 +261,22 @@ section[id] {
   }
   .team-member-portrait {
     width: 100% !important;
-    height: 280px !important;
+    height: 360px !important;
+    max-height: 360px !important;
   }
   .team-member-info {
-    left: 0 !important;
-    right: 0 !important;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
     padding-top: 1.5rem !important;
+    gap: 1.5rem !important;
+  }
+  .team-member-name {
+    font-size: 2.5rem !important;
+  }
+  .team-member-bio {
+    font-size: 0.875rem !important;
+    line-height: 1.6 !important;
   }
 
   /* Footer — reduce top padding */
