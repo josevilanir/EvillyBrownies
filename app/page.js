@@ -4,6 +4,7 @@ import Menu from '../components/Menu/Menu';
 import Stats from '../components/Stats/Stats';
 import About from '../components/About/About';
 import Instagram from '../components/Instagram/Instagram';
+import Comparison from '../components/Comparison/Comparison';
 import Footer from '../components/Footer/Footer';
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
         <Menu />
         <Stats />
         <About />
+        <Comparison />
         <Instagram />
         <Footer />
       </main>

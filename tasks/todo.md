@@ -28,3 +28,9 @@
 - [x] Redesign Menu to minimalist table/list style <!-- id: 22 -->
 - [x] Update About and Stats for cleaner editorial look <!-- id: 23 -->
 - [x] Final visual polish and responsive audit <!-- id: 24 -->
+
+## Image Comparison Section
+- [x] Adapt and implement Image Comparison slider component <!-- id: 40 -->
+- [x] Integrate images provided by the user (`brownie-ours.png` and `brownie-others.png`) <!-- id: 41 -->
+- [x] Create the `Comparison` section component and add it before Instagram <!-- id: 42 -->
+- [x] Verify UI and functionality <!-- id: 43 -->
