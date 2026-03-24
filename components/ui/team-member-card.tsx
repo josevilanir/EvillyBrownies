@@ -32,10 +32,18 @@ export default function TeamMemberCard({
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768)
+    const check = () => {
+      const w = window.innerWidth
+      const isPortrait = window.matchMedia('(orientation: portrait)').matches
+      setIsMobile(w <= 600 || (w < 768 && isPortrait))
+    }
     check()
     window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+    window.matchMedia('(orientation: portrait)').addEventListener('change', check)
+    return () => {
+      window.removeEventListener('resize', check)
+      window.matchMedia('(orientation: portrait)').removeEventListener('change', check)
+    }
   }, [])
 
   return (
@@ -43,7 +51,7 @@ export default function TeamMemberCard({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      style={{ position: 'relative', margin: '4rem 0' }}
+      style={{ position: 'relative', margin: '4rem 0', padding: isMobile ? '0 1.2rem' : 0 }}
       className={className}
     >
       {/* Job position label */}
@@ -86,7 +94,8 @@ export default function TeamMemberCard({
           style={{
             position: 'relative',
             width: isMobile ? '100%' : 360,
-            height: isMobile ? 260 : 500,
+            height: isMobile ? 380 : 500,
+            maxHeight: isMobile ? 380 : 'none',
             flexShrink: 0,
             overflow: 'hidden',
           }}
@@ -122,8 +131,8 @@ export default function TeamMemberCard({
           transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="team-member-info"
           style={{
-            position: 'relative',
-            left: isMobile ? 0 : isPositionRight ? 32 : -32,
+            position: isMobile ? 'static' : 'relative',
+            left: isMobile ? 'auto' : isPositionRight ? 32 : -32,
             zIndex: 2,
             flex: 1,
             display: 'flex',
@@ -137,7 +146,7 @@ export default function TeamMemberCard({
           <p
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+              fontSize: isMobile ? 'clamp(2rem, 7vw, 3rem)' : 'clamp(2.5rem, 5vw, 4rem)',
               lineHeight: 1.05,
               letterSpacing: '-0.02em',
               color: 'var(--text-main)',
@@ -203,8 +212,8 @@ export default function TeamMemberCard({
             <p
               style={{
                 flex: 1,
-                fontSize: '0.9rem',
-                lineHeight: 2,
+                fontSize: isMobile ? '0.85rem' : '0.9rem',
+                lineHeight: isMobile ? 1.7 : 2,
                 color: 'var(--text-light)',
                 fontFamily: 'var(--font-sans)',
                 textAlign: isPositionRight ? 'right' : 'left',
