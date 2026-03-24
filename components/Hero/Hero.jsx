@@ -1,6 +1,5 @@
 'use client';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 
 export default function Hero() {
   return (
@@ -49,7 +48,6 @@ export default function Hero() {
         letterSpacing: '3.5px',
         textTransform: 'uppercase',
         color: 'var(--text-light)',
-        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         gap: '1.5rem',
@@ -76,7 +74,6 @@ export default function Hero() {
         letterSpacing: '3.5px',
         textTransform: 'uppercase',
         color: 'var(--text-light)',
-        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         gap: '1.5rem',
@@ -204,39 +201,8 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* ── Floating Brownie Image (cutout, no box) ── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, ease: 'easeOut', delay: 0.15 }}
-            style={{
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              style={{
-                position: 'relative',
-                width: '100%',
-                maxWidth: '520px',
-                filter: 'drop-shadow(0 32px 48px rgba(26, 16, 10, 0.22)) drop-shadow(0 8px 16px rgba(26, 16, 10, 0.12))',
-              }}
-            >
-              <Image
-                src="/images/hero-brownie.png"
-                width={600}
-                height={600}
-                className="img-responsive"
-                alt="Brownie artesanal"
-                priority
-                style={{ display: 'block' }}
-              />
-            </motion.div>
-          </motion.div>
+          {/* Right column — kept empty so floating brownies occupy this space */}
+          <div aria-hidden="true" />
         </div>
       </div>
 
