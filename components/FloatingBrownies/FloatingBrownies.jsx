@@ -18,7 +18,7 @@ function lerp(a, b, t) {
 }
 
 // ── Single animated image ──────────────────────────────────────────────────────
-function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay, pinPosition }) {
+function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay }) {
   // Raw values — RAF writes to these
   const xRaw      = useMotionValue(initial.x);
   const yRaw      = useMotionValue(initial.y);
@@ -69,27 +69,17 @@ function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scroll
       const targetX = target.docX;
       const targetY = target.docY - s;
 
-      if (pinPosition) {
-        // Mobile: stay at initial position, just bob + fade out past hero
-        xRaw.set(initial.x + bobX);
-        yRaw.set(initial.y + bobY);
-        sizeRaw.set(initial.size);
-        rotateRaw.set(initial.rotate + bobRotate);
-        const fadeProgress = Math.max(0, Math.min(1, (s - scrollStart) / Math.max(1, scrollEnd - scrollStart)));
-        opMv.set((1 - fadeProgress) * 0.93);
-      } else {
-        // Desktop: fly toward menu thumbnail
-        xRaw.set(lerp(initial.x, targetX, eased) + bobX);
-        yRaw.set(lerp(initial.y, targetY, eased) + bobY);
-        sizeRaw.set(lerp(initial.size, target.size, eased));
-        rotateRaw.set(lerp(initial.rotate, 0, eased) + bobRotate);
+      // Fly toward menu thumbnail
+      xRaw.set(lerp(initial.x, targetX, eased) + bobX);
+      yRaw.set(lerp(initial.y, targetY, eased) + bobY);
+      sizeRaw.set(lerp(initial.size, target.size, eased));
+      rotateRaw.set(lerp(initial.rotate, 0, eased) + bobRotate);
 
-        // Opacity: hold near 1 while flying, fade out on final approach so real thumbnail takes over
-        if (progress < 0.75) {
-          opMv.set(lerp(0.93, 1.0, progress / 0.75));
-        } else {
-          opMv.set(lerp(1.0, 0, (progress - 0.75) / 0.25));
-        }
+      // Opacity: hold near 1 while flying, fade out on final approach so real thumbnail takes over
+      if (progress < 0.75) {
+        opMv.set(lerp(0.93, 1.0, progress / 0.75));
+      } else {
+        opMv.set(lerp(1.0, 0, (progress - 0.75) / 0.25));
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -144,76 +134,82 @@ export default function FloatingBrownies() {
   useEffect(() => {
     let measureRafId = null;
     let resizeTimer  = null;
+    let roRef        = null;
 
     const measure = () => {
       // Cancel any pending measurement RAF before scheduling a new one
       if (measureRafId) cancelAnimationFrame(measureRafId);
 
-      // RAF guarantees we read positions AFTER the browser has reflowed
+      // Double-RAF: first RAF fires after paint, second after layout is fully stable
       measureRafId = requestAnimationFrame(() => {
-        if (typeof window === 'undefined') return;
+        requestAnimationFrame(() => {
+          if (typeof window === 'undefined') return;
 
-        const vw       = window.innerWidth;
-        const vh       = window.innerHeight;
-        const isMobile = vw < 768;
+          const vw       = window.innerWidth;
+          const vh       = window.innerHeight;
+          const isMobile = vw < 768;
 
-        if (isMobile) {
-          // Mobile: bob inside Hero, then fade out as user scrolls past it
-          const initials = [
-            { x: vw * 0.05, y: vh * 0.08, size: 72, rotate: -10, floatPhase: 0,   floatSpeed: 0.62, floatAmp: 12 },
-            { x: vw * 0.68, y: vh * 0.35, size: 62, rotate:   6, floatPhase: 2.1, floatSpeed: 0.80, floatAmp:  9 },
-            { x: vw * 0.10, y: vh * 0.58, size: 54, rotate:  -3, floatPhase: 3.8, floatSpeed: 0.52, floatAmp: 10 },
-          ];
-          const heroEl = document.getElementById('hero');
-          const heroBottom = heroEl
-            ? heroEl.getBoundingClientRect().bottom + window.scrollY
-            : vh * 1.1;
-          const targets = initials.map(init => ({ docX: init.x, docY: init.y, size: init.size }));
-          setCfg({
-            initials,
-            targets,
-            scrollStart: heroBottom * 0.45,
-            scrollEnd:   heroBottom,
-            pinPosition: true,
+          const hero   = document.getElementById('hero');
+          const thumbs = document.querySelectorAll('[data-menu-thumbnail]');
+          if (!hero || thumbs.length < 3) return;
+
+          const scrollNow     = window.scrollY;
+          const scrollX       = window.scrollX;
+          const heroRect      = hero.getBoundingClientRect();
+          const heroDocBottom = heroRect.bottom + scrollNow;
+          const heroH         = heroRect.height;
+
+          let initials;
+          if (isMobile) {
+            // Hero text is centered vertically inside the hero section.
+            // paddingTop ≈ 200px + flex-centering pushes text to ~35–70% of heroH.
+            // Safe zones: top ~12% (above text) and bottom ~25% (below buttons).
+            // Header is 72px tall — clamp top positions to stay clear of it.
+            const safeTop    = Math.max(88, heroH * 0.10); // just below header
+            const safeBot1   = heroH * 0.75;               // lower-left
+            const safeBot2   = heroH * 0.71;               // lower-right
+            initials = [
+              { x: vw * 0.72, y: safeTop,  size: 90, rotate: -12, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 14 },
+              { x: vw * 0.06, y: safeBot1, size: 80, rotate:   8, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 10 },
+              { x: vw * 0.65, y: safeBot2, size: 70, rotate:  -5, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 12 },
+            ];
+          } else {
+            // Desktop: large triangular spread across right half of viewport
+            initials = [
+              { x: vw * 0.54, y: vh * 0.07, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
+              { x: vw * 0.73, y: vh * 0.38, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
+              { x: vw * 0.52, y: vh * 0.60, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
+            ];
+          }
+
+          // Target positions — document-absolute coords of each thumbnail (works on any layout)
+          const targets = Array.from(thumbs).map((el) => {
+            const r = el.getBoundingClientRect();
+            return {
+              docX: r.left + scrollX,
+              docY: r.top  + scrollNow,
+              size: r.width,
+            };
           });
-          return;
-        }
 
-        const hero   = document.getElementById('hero');
-        const thumbs = document.querySelectorAll('[data-menu-thumbnail]');
-        if (!hero || thumbs.length < 3) return;
+          // Animation window: same formula for both mobile and desktop
+          const scrollStart = heroDocBottom * 0.35;
+          const scrollEnd   = Math.max(targets[0].docY - vh * 0.35, scrollStart + 300);
 
-        const scrollNow     = window.scrollY;
-        const scrollX       = window.scrollX;
-        const heroRect      = hero.getBoundingClientRect();
-        const heroDocBottom = heroRect.bottom + scrollNow;
+          setCfg({ initials, targets, scrollStart, scrollEnd });
 
-        // Initial positions — organic triangular spread across right half of viewport
-        const initials = [
-          { x: vw * 0.54, y: vh * 0.07, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
-          { x: vw * 0.73, y: vh * 0.38, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
-          { x: vw * 0.52, y: vh * 0.60, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
-        ];
-
-        // Target positions — document-absolute coords of each thumbnail
-        const targets = Array.from(thumbs).map((el) => {
-          const r = el.getBoundingClientRect();
-          return {
-            docX: r.left + scrollX,
-            docY: r.top  + scrollNow,
-            size: r.width,
-          };
+          // ResizeObserver on thumbnails — recalculate whenever their layout changes
+          if (roRef) roRef.disconnect();
+          roRef = new ResizeObserver(() => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(measure, 150);
+          });
+          thumbs.forEach(el => roRef.observe(el));
         });
-
-        // Animation window: start at 35% of hero scroll, end when first thumbnail is ~35% from viewport bottom
-        const scrollStart = heroDocBottom * 0.35;
-        const scrollEnd   = Math.max(targets[0].docY - vh * 0.35, scrollStart + 300);
-
-        setCfg({ initials, targets, scrollStart, scrollEnd });
       });
     };
 
-    // Debounced resize handler — waits 150ms for layout to stabilise before measuring
+    // Debounced resize handler
     const handleResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(measure, 150);
@@ -226,6 +222,7 @@ export default function FloatingBrownies() {
 
     return () => {
       if (measureRafId) cancelAnimationFrame(measureRafId);
+      if (roRef) roRef.disconnect();
       clearTimeout(settleTimer);
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
@@ -247,7 +244,6 @@ export default function FloatingBrownies() {
           scrollStart={cfg.scrollStart}
           scrollEnd={cfg.scrollEnd}
           entryDelay={350 + i * 180}
-          pinPosition={cfg.pinPosition ?? false}
         />
       ))}
     </>
