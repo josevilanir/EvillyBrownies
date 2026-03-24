@@ -1,60 +1,68 @@
 'use client';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import TeamMemberCard from '../ui/team-member-card';
 
 export default function About() {
   return (
-    <section id="about" className="section" style={{ position: 'relative', overflow: 'hidden' }}>
-      {/* Background Watermark */}
-      <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', opacity: 0.05, transform: 'rotate(-15deg)', zIndex: 0 }}>
-        <Image src="/images/cocoa-icon.png" width={400} height={400} alt="Cacau Watermark" />
-      </div>
+    /* The `dark` class forces all dark: Tailwind variants active within this section */
+    <section
+      id="about"
+      className="section"
+      style={{
+        backgroundColor: 'var(--background)',
+        borderTop: 'none',
+      }}
+    >
+      <div className="container">
 
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.2fr', gap: 'var(--spacing-lg)', alignItems: 'center' }}>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            style={{ borderRadius: '12px', overflow: 'hidden', boxShadow: 'var(--shadow-premium)', transform: 'rotate(2deg)' }}
-          >
-            <Image 
-              src="/images/evilly-souza.png" 
-              width={500} 
-              height={600} 
-              className="img-responsive" 
-              alt="Evilly Souza na Cozinha" 
-            />
-          </motion.div>
+        {/* Editorial team member card — renders in dark context */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
+          <TeamMemberCard
+            position="left"
+            jobPosition="Artesã de Brownies · São Paulo"
+            firstName="Evilly"
+            lastName="Souza"
+            imageUrl="/images/evilly-souza.png"
+            description="A paixão pelo chocolate artesanal começou no coração da sua cozinha. Cada brownie é uma obra de arte — a intensidade do cacau com a delicadeza do preparo manual. Chocolate de verdade, ingredientes frescos e aquele toque de carinho que você sente em cada mordida."
+          />
+        </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+        {/* CTA — gold on black */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          style={{ paddingBottom: 'var(--spacing-md)' }}
+        >
+          <a
+            href="https://wa.me/55000000000"
+            className="btn-whatsapp"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              backgroundColor: 'var(--gold)',
+              color: '#FFFFFF',
+              padding: '1rem 2.4rem',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '2.5px',
+              textTransform: 'uppercase',
+              fontFamily: 'var(--font-sans)',
+              transition: 'background-color 0.3s ease',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#BFA07A'; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'var(--gold)'; }}
           >
-            <h2 style={{ fontSize: '3rem', color: 'var(--primary)', marginBottom: 'var(--spacing-md)' }}>
-              CONHEÇA A EVILLY SOUZA
-            </h2>
-            <div style={{ fontSize: '1.1rem', color: 'var(--text-main)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <p>
-                A paixão pelo chocolate artesanal começou no coração da minha cozinha. Cada brownie é uma obra de arte, 
-                equilibrando a intensidade do cacau com a delicadeza do preparo manual.
-              </p>
-              <p>
-                Nosso segredo está nos detalhes: chocolate de verdade, ingredientes frescos e aquele toque especial de 
-                carinho que você sente em cada mordida.
-              </p>
-              <p>
-                Seja para um café da tarde ou para presentear alguém especial, nossos brownies são feitos para 
-                proporcionar momentos de pura felicidade.
-              </p>
-            </div>
-          </motion.div>
-          
-        </div>
+            Fazer um pedido
+          </a>
+        </motion.div>
       </div>
     </section>
   );

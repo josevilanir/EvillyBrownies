@@ -1,74 +1,180 @@
 'use client';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 const products = [
   {
-    title: 'Brownie no pote',
+    title: 'Brownie no Pote',
     price: 'R$ 10,00',
     description: 'Cremoso, feito no pote, pronto para comer.',
-    image: '/images/brownie-pote.png'
+    image: '/images/brownie-pote.png',
   },
   {
-    title: 'Brownie tradicional',
+    title: 'Brownie Tradicional',
     price: 'R$ 4,00',
     description: 'Clássico, crocante por fora, macio por dentro.',
-    image: '/images/brownie-tradicional.png'
+    image: '/images/brownie-tradicional.png',
   },
   {
     title: 'Mini Brownie',
     price: 'R$ 2,00',
     description: 'Pequeno, ideal para lembrancinhas, vários sabores.',
-    image: '/images/mini-brownie.png'
-  }
+    image: '/images/mini-brownie.png',
+  },
 ];
+
+function MenuItem({ product, index }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: '2rem',
+        padding: '1.8rem 0',
+        borderBottom: '0.5px solid rgba(166, 124, 82, 0.2)',
+        cursor: 'default',
+        transition: 'background 0.3s ease',
+      }}
+    >
+      {/* Thumbnail */}
+      <div style={{
+        width: '52px',
+        height: '52px',
+        position: 'relative',
+        flexShrink: 0,
+        overflow: 'hidden',
+      }}>
+        <motion.div
+          animate={{ scale: hovered ? 1 : 0.85, opacity: hovered ? 1 : 0.5 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          style={{ width: '100%', height: '100%', position: 'relative' }}
+        >
+          <Image
+            src={product.image}
+            fill
+            sizes="52px"
+            style={{ objectFit: 'cover', borderRadius: '2px' }}
+            alt={product.title}
+          />
+        </motion.div>
+      </div>
+
+      {/* Title + description */}
+      <div style={{ flex: 1 }}>
+        <h3 style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: '1.1rem',
+          fontWeight: 700,
+          color: 'var(--text-main)',
+          letterSpacing: '0.01em',
+          marginBottom: '0.3rem',
+        }}>
+          {product.title}
+        </h3>
+        <p style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '0.85rem',
+          fontWeight: 300,
+          color: 'var(--text-light)',
+          lineHeight: 1.6,
+          maxWidth: '480px',
+        }}>
+          {product.description}
+        </p>
+      </div>
+
+      {/* Price */}
+      <div style={{
+        fontFamily: 'var(--font-serif)',
+        fontStyle: 'italic',
+        fontSize: '1.05rem',
+        fontWeight: 400,
+        color: 'var(--gold)',
+        letterSpacing: '0.02em',
+        flexShrink: 0,
+      }}>
+        {product.price}
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Menu() {
   return (
-    <section id="menu" className="section" style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', backdropFilter: 'blur(5px)' }}>
+    <section id="menu" className="section" style={{ backgroundColor: 'var(--background)' }}>
       <div className="container">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
+
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          style={{ textAlign: 'center', fontSize: '3rem', marginBottom: 'var(--spacing-lg)', color: 'var(--primary)' }}
+          style={{ marginBottom: 'var(--spacing-lg)' }}
         >
-          NOSSO CARDÁPIO
-        </motion.h2>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '0.6rem',
+            fontWeight: 500,
+            letterSpacing: '4px',
+            textTransform: 'uppercase',
+            color: 'var(--gold)',
+            marginBottom: '0.8rem',
+          }}>
+            Escolha o seu
+          </p>
+          <h2 style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(2.2rem, 4vw, 3.5rem)',
+            fontWeight: 900,
+            color: 'var(--text-main)',
+            letterSpacing: '-0.02em',
+            lineHeight: 0.95,
+          }}>
+            Cardápio
+            <span style={{
+              display: 'block',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              fontSize: '0.5em',
+              color: 'var(--gold)',
+              letterSpacing: '0.05em',
+              marginTop: '0.4em',
+            }}>artesanal</span>
+          </h2>
+        </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'var(--spacing-md)' }}>
+        {/* Top rule in gold */}
+        <div style={{ borderTop: '1px solid var(--text-main)', paddingTop: '0' }} />
+
+        {/* Product list */}
+        <div>
           {products.map((product, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10 }}
-              style={{
-                backgroundColor: 'var(--background)',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                boxShadow: 'var(--shadow-premium)',
-                padding: 'var(--spacing-sm)',
-                border: '1px solid rgba(61, 38, 22, 0.1)'
-              }}
-            >
-              <div style={{ position: 'relative', height: '240px', borderRadius: '8px', overflow: 'hidden', marginBottom: '1rem' }}>
-                <Image 
-                  src={product.image} 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  style={{ objectFit: 'cover' }} 
-                  alt={product.title} 
-                />
-              </div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: 'var(--primary)' }}>{product.title}</h3>
-              <p style={{ fontWeight: 700, fontSize: '1.2rem', color: 'var(--accent)', marginBottom: '0.5rem' }}>{product.price}</p>
-              <p style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>{product.description}</p>
-            </motion.div>
+            <MenuItem key={index} product={product} index={index} />
           ))}
         </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          style={{ marginTop: 'var(--spacing-md)' }}
+        >
+          <a href="https://wa.me/55000000000" className="btn-primary btn-whatsapp">
+            Fazer pedido via WhatsApp
+          </a>
+        </motion.div>
       </div>
     </section>
   );
