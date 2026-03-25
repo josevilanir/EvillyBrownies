@@ -49,7 +49,7 @@
   --muted: #ece5d8;
   --accent: #d4c8aa;
   --border: #dbd0ba;
-  --radius: 0.25rem;
+  --radius: 0.5rem;
   --popover: #fffcf5;
   --primary: #a67c52;
   --secondary: #e2d8c3;
@@ -153,6 +153,10 @@ section[id] {
   scroll-margin-top: 72px;
 }
 
+#menu {
+  padding-top: 1.5rem;
+}
+
 /* ── Utilities ── */
 .container {
   max-width: 1200px;
@@ -172,7 +176,7 @@ section[id] {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2.5px;
-  border-radius: 0;
+  border-radius: var(--radius);
   transition: var(--transition-smooth);
   display: inline-block;
   font-family: var(--font-sans);
@@ -282,8 +286,7 @@ section[id] {
   /* Hero — fill viewport on mobile so menu section isn't visible on load */
   #hero {
     min-height: 100svh !important;
-    padding-top: 72px !important;
-    padding-bottom: 3rem !important;
+    padding-top: calc(72px + 2.5rem) !important;
     align-items: flex-start !important;
   }
 

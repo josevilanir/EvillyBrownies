@@ -55,6 +55,7 @@ export default function About() {
               letterSpacing: '2.5px',
               textTransform: 'uppercase',
               fontFamily: 'var(--font-sans)',
+              borderRadius: 'var(--radius)',
               transition: 'background-color 0.3s ease',
             }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#BFA07A'; }}

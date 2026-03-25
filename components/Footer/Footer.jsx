@@ -68,6 +68,7 @@ export default function Footer() {
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
                 fontFamily: 'var(--font-sans)',
+                borderRadius: 'var(--radius)',
                 transition: 'all 0.3s ease',
               }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#BFA07A'; }}
@@ -129,6 +130,7 @@ export default function Footer() {
                 style={{
                   width: '38px', height: '38px',
                   border: '1px solid rgba(166, 124, 82, 0.3)',
+                  borderRadius: 'var(--radius)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

@@ -80,6 +80,7 @@ export default function TeamMemberCard({
             height: 500,
             flexShrink: 0,
             overflow: 'hidden',
+            borderRadius: '0.75rem',
           }}
         >
           <div
