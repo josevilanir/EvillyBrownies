@@ -279,9 +279,9 @@ section[id] {
     line-height: 1.6 !important;
   }
 
-  /* Hero — remove full-vh height on mobile, tighten padding */
+  /* Hero — fill viewport on mobile so menu section isn't visible on load */
   #hero {
-    min-height: auto !important;
+    min-height: 100svh !important;
     padding-top: 72px !important;
     padding-bottom: 3rem !important;
     align-items: flex-start !important;

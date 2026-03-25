@@ -75,7 +75,7 @@ export default function Comparison() {
           </motion.div>
         </div>
 
-        <div className="mt-16 flex flex-wrap justify-center gap-12 md:gap-24 text-center">
+        <div className="mt-16 flex flex-nowrap justify-center gap-6 md:gap-24 text-center">
           <DetailItem title="Massa" desc="Ultra úmida e densa" />
           <DetailItem title="Chocolate" desc="70% Cacau Premium" />
           <DetailItem title="Casquinha" desc="Crocante e brilhante" />
@@ -87,9 +87,9 @@ export default function Comparison() {
 
 function DetailItem({ title, desc }) {
   return (
-    <div className="flex flex-col gap-2">
-      <span className="text-foreground font-serif font-bold text-xl">{title}</span>
-      <span className="text-foreground/60 text-sm italic font-sans">{desc}</span>
+    <div className="flex flex-col gap-1 md:gap-2">
+      <span className="text-foreground font-serif font-bold text-sm md:text-xl">{title}</span>
+      <span className="text-foreground/60 text-xs md:text-sm italic font-sans">{desc}</span>
     </div>
   );
 }
