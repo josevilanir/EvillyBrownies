@@ -88,7 +88,7 @@ export default function Hero() {
         <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '0.6rem', letterSpacing: '2px' }}>By Order</span>
       </div>
 
-      <div className="container" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+      <div className="container" style={{ position: 'relative', zIndex: 1, width: '100%', marginTop: '2.5rem' }}>
         <div className="hero-grid" style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',

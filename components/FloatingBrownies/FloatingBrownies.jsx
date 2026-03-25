@@ -174,9 +174,9 @@ export default function FloatingBrownies() {
           } else {
             // Desktop: large triangular spread across right half of viewport
             initials = [
-              { x: vw * 0.54, y: vh * 0.07, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
-              { x: vw * 0.73, y: vh * 0.38, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
-              { x: vw * 0.52, y: vh * 0.60, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
+              { x: vw * 0.54, y: vh * 0.12, size: 260, rotate:  -8, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 18 },
+              { x: vw * 0.73, y: vh * 0.43, size: 200, rotate:   6, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 13 },
+              { x: vw * 0.52, y: vh * 0.65, size: 175, rotate:  -4, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
             ];
           }
 
@@ -243,7 +243,7 @@ export default function FloatingBrownies() {
           scrollY={scrollY}
           scrollStart={cfg.scrollStart}
           scrollEnd={cfg.scrollEnd}
-          entryDelay={350 + i * 180}
+          entryDelay={350}
         />
       ))}
     </>

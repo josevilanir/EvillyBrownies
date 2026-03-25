@@ -75,7 +75,7 @@ export default function Comparison() {
           </motion.div>
         </div>
 
-        <div className="mt-16 flex flex-nowrap justify-center gap-6 md:gap-24 text-center">
+        <div className="mt-28 flex flex-nowrap justify-center gap-6 md:gap-24 text-center">
           <DetailItem title="Massa" desc="Ultra úmida e densa" />
           <DetailItem title="Chocolate" desc="70% Cacau Premium" />
           <DetailItem title="Casquinha" desc="Crocante e brilhante" />
