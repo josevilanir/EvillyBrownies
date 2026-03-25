@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 const products = [
@@ -26,9 +26,19 @@ const products = [
 
 function MenuItem({ product, index }) {
   const [hovered, setHovered] = useState(false);
+  const rowRef = useRef(null);
+
+  // Thumbnail fades in as the row scrolls from 85% → 45% of the viewport height.
+  // This timing naturally coincides with the floating brownie "landing" in the thumbnail.
+  const { scrollYProgress } = useScroll({
+    target: rowRef,
+    offset: ['start 0.85', 'start 0.45'],
+  });
+  const thumbOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <motion.div
+      ref={rowRef}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -46,8 +56,8 @@ function MenuItem({ product, index }) {
         transition: 'background 0.3s ease',
       }}
     >
-      {/* Thumbnail */}
-      <div
+      {/* Thumbnail — starts invisible, blooms as the floating brownie "lands" */}
+      <motion.div
         data-menu-thumbnail={index}
         style={{
           width: '52px',
@@ -55,10 +65,11 @@ function MenuItem({ product, index }) {
           position: 'relative',
           flexShrink: 0,
           overflow: 'hidden',
+          opacity: thumbOpacity,
         }}
       >
         <motion.div
-          animate={{ scale: hovered ? 1 : 0.92, opacity: 1 }}
+          animate={{ scale: hovered ? 1 : 0.92 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
           style={{ width: '100%', height: '100%', position: 'relative' }}
         >
@@ -70,7 +81,7 @@ function MenuItem({ product, index }) {
             alt={product.title}
           />
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Title + description */}
       <div style={{ flex: 1 }}>

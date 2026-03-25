@@ -157,18 +157,19 @@ export default function FloatingBrownies() {
           const scrollX       = window.scrollX;
           const heroRect      = hero.getBoundingClientRect();
           const heroDocBottom = heroRect.bottom + scrollNow;
-          const heroH         = heroRect.height;
 
           let initials;
           if (isMobile) {
-            // Brownies are position:fixed so use vh-based coords (viewport-relative).
-            // Hero is now auto-height on mobile — no longer safe to derive positions from heroH.
-            // Top: just below the 72px header. Bottom pair: ~70% / 66% of viewport.
-            const safeTop = Math.max(88, vh * 0.10);
+            // Distribute all 3 brownies inside the hero section, right-aligned.
+            // heroRect.bottom is the viewport-coordinate bottom of the hero at scroll=0 —
+            // the only safe upper bound that tracks the actual hero height.
+            const heroBottom  = heroRect.bottom;
+            const contentTop  = 88; // clear fixed header (72px) + small gap
+            const span        = Math.max(60, heroBottom - contentTop - 40);
             initials = [
-              { x: vw * 0.72, y: safeTop,    size: 90, rotate: -12, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 14 },
-              { x: vw * 0.06, y: vh * 0.70,  size: 80, rotate:   8, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 10 },
-              { x: vw * 0.65, y: vh * 0.66,  size: 70, rotate:  -5, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 12 },
+              { x: vw * 0.64, y: contentTop + span * 0.08, size: 85, rotate: -12, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 12 },
+              { x: vw * 0.72, y: contentTop + span * 0.44, size: 75, rotate:   8, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 10 },
+              { x: vw * 0.60, y: contentTop + span * 0.80, size: 65, rotate:  -5, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 11 },
             ];
           } else {
             // Desktop: large triangular spread across right half of viewport

@@ -24,7 +24,7 @@ export default function About() {
         >
           <TeamMemberCard
             position="left"
-            jobPosition="Artesã de Brownies · São Paulo"
+            jobPosition="Artesã de Brownies · Natal RN"
             firstName="Evilly"
             lastName="Souza"
             imageUrl="/images/evilly-souza.png"
