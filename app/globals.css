@@ -286,7 +286,7 @@ section[id] {
   /* Hero — fill viewport on mobile so menu section isn't visible on load */
   #hero {
     min-height: 100svh !important;
-    padding-top: calc(72px + 2.5rem) !important;
+    padding-top: calc(72px + 3.5rem) !important;
     align-items: flex-start !important;
   }
 

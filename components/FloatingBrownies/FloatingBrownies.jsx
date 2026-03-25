@@ -164,7 +164,7 @@ export default function FloatingBrownies() {
             // heroRect.bottom is the viewport-coordinate bottom of the hero at scroll=0 —
             // the only safe upper bound that tracks the actual hero height.
             const heroBottom  = heroRect.bottom;
-            const contentTop  = 88; // clear fixed header (72px) + small gap
+            const contentTop  = 104; // clear fixed header (72px) + small gap
             const span        = Math.max(60, heroBottom - contentTop - 40);
             initials = [
               { x: vw * 0.64, y: contentTop + span * 0.08, size: 85, rotate: -12, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 12 },
