@@ -58,7 +58,7 @@ function MenuItem({ product, index }) {
         }}
       >
         <motion.div
-          animate={{ scale: hovered ? 1 : 0.85, opacity: hovered ? 1 : 0.5 }}
+          animate={{ scale: hovered ? 1 : 0.92, opacity: 1 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
           style={{ width: '100%', height: '100%', position: 'relative' }}
         >

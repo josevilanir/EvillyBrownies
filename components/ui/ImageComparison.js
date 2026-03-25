@@ -30,22 +30,34 @@ export const ImageComparison = ({
     setSliderPosition(newPosition);
   }, [isDragging]);
 
-  const handleMouseDown = () => setIsDragging(true);
-  const handleMouseUp = () => setIsDragging(false);
-  const handleMouseMove = (e) => handleMove(e.clientX);
-  
-  const handleTouchStart = () => setIsDragging(true);
-  const handleTouchEnd = () => setIsDragging(false);
-  const handleTouchMove = (e) => handleMove(e.touches[0].clientX);
+  const handleMouseDown = useCallback(() => setIsDragging(true), []);
+  const handleMouseUp = useCallback(() => setIsDragging(false), []);
+  const handleMouseMove = useCallback((e) => handleMove(e.clientX), [handleMove]);
+
+  const handleTouchStart = useCallback((e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+  const handleTouchEnd = useCallback(() => setIsDragging(false), []);
+  const handleTouchMove = useCallback((e) => {
+    e.preventDefault();
+    handleMove(e.touches[0].clientX);
+  }, [handleMove]);
 
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.addEventListener('touchstart', handleTouchStart, { passive: false });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
     window.addEventListener('mouseup', handleMouseUp);
-    window.addEventListener('touchend', handleTouchEnd);
     return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, []);
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd, handleMouseUp]);
 
   return (
     <div 
@@ -56,7 +68,7 @@ export const ImageComparison = ({
       )}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseUp}
-      onTouchMove={handleTouchMove}
+      style={{ touchAction: 'none' }}
     >
       {/* Before Image (Bottom Layer - Comparison/Common) */}
       <div className="absolute inset-0 w-full h-full bg-neutral-100">
@@ -86,7 +98,6 @@ export const ImageComparison = ({
         className="absolute top-0 bottom-0 w-px bg-white/50 cursor-ew-resize flex items-center justify-center z-10"
         style={{ left: `calc(${sliderPosition}% - 0.5px)` }}
         onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
       >
         <div className={cn(
           "bg-white rounded-full h-12 w-12 flex items-center justify-center shadow-2xl border border-primary/10 transition-transform duration-200 backdrop-blur-sm",

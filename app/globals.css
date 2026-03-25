@@ -279,6 +279,14 @@ section[id] {
     line-height: 1.6 !important;
   }
 
+  /* Hero — remove full-vh height on mobile, tighten padding */
+  #hero {
+    min-height: auto !important;
+    padding-top: calc(72px + 2rem) !important;
+    padding-bottom: 3rem !important;
+    align-items: flex-start !important;
+  }
+
   /* Footer — reduce top padding */
   .footer-inner { padding-top: 4rem !important; }
 

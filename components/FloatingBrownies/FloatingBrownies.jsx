@@ -161,17 +161,14 @@ export default function FloatingBrownies() {
 
           let initials;
           if (isMobile) {
-            // Hero text is centered vertically inside the hero section.
-            // paddingTop ≈ 200px + flex-centering pushes text to ~35–70% of heroH.
-            // Safe zones: top ~12% (above text) and bottom ~25% (below buttons).
-            // Header is 72px tall — clamp top positions to stay clear of it.
-            const safeTop    = Math.max(88, heroH * 0.10); // just below header
-            const safeBot1   = heroH * 0.75;               // lower-left
-            const safeBot2   = heroH * 0.71;               // lower-right
+            // Brownies are position:fixed so use vh-based coords (viewport-relative).
+            // Hero is now auto-height on mobile — no longer safe to derive positions from heroH.
+            // Top: just below the 72px header. Bottom pair: ~70% / 66% of viewport.
+            const safeTop = Math.max(88, vh * 0.10);
             initials = [
-              { x: vw * 0.72, y: safeTop,  size: 90, rotate: -12, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 14 },
-              { x: vw * 0.06, y: safeBot1, size: 80, rotate:   8, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 10 },
-              { x: vw * 0.65, y: safeBot2, size: 70, rotate:  -5, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 12 },
+              { x: vw * 0.72, y: safeTop,    size: 90, rotate: -12, floatPhase: 0,   floatSpeed: 0.58, floatAmp: 14 },
+              { x: vw * 0.06, y: vh * 0.70,  size: 80, rotate:   8, floatPhase: 2.1, floatSpeed: 0.78, floatAmp: 10 },
+              { x: vw * 0.65, y: vh * 0.66,  size: 70, rotate:  -5, floatPhase: 3.8, floatSpeed: 0.50, floatAmp: 12 },
             ];
           } else {
             // Desktop: large triangular spread across right half of viewport

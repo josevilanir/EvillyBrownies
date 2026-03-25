@@ -5,10 +5,13 @@ import { motion, useInView } from 'framer-motion';
 function CountUp({ to, suffix = '' }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+  const inView = useInView(ref, { once: false });
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) {
+      setCount(0);
+      return;
+    }
     let current = 0;
     const duration = 1600;
     const increment = to / (duration / 16);
@@ -49,7 +52,7 @@ export default function Stats() {
               key={i}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: i * 0.12, duration: 0.6 }}
               style={{
                 padding: '1.5rem 2rem',
