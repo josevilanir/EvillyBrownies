@@ -190,9 +190,11 @@ export default function FloatingBrownies() {
             };
           });
 
-          // Animation window: same formula for both mobile and desktop
+          // Animation window: complete exactly when #menu section anchors below the header
+          const menuEl      = document.getElementById('menu');
+          const menuDocTop  = menuEl ? menuEl.getBoundingClientRect().top + scrollNow : targets[0].docY;
           const scrollStart = heroDocBottom * 0.35;
-          const scrollEnd   = Math.max(targets[0].docY - vh * 0.35, scrollStart + 300);
+          const scrollEnd   = Math.max(menuDocTop - 72, scrollStart + 300);
 
           setCfg({ initials, targets, scrollStart, scrollEnd });
 

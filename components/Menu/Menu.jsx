@@ -77,7 +77,7 @@ function MenuItem({ product, index }) {
             src={product.image}
             fill
             sizes="52px"
-            style={{ objectFit: 'cover', borderRadius: '2px' }}
+            style={{ objectFit: 'cover', borderRadius: '8px' }}
             alt={product.title}
           />
         </motion.div>
