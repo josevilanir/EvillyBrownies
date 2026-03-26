@@ -36,8 +36,8 @@
 - [x] Verify UI and functionality <!-- id: 43 -->
 
 ## Animation Improvements
-- [ ] Sync Floating Brownies flight with Menu thumbnails (landing instead of fading) <!-- id: 60 -->
-- [ ] Verify seamless transition and docking <!-- id: 61 -->
+- [x] Sync Floating Brownies flight with Menu thumbnails (landing instead of fading) <!-- id: 60 -->
+- [x] Verify seamless transition and docking <!-- id: 61 -->
 
 ## Brand Asset Update
 - [x] Replace default Vercel favicon with brownie icon <!-- id: 50 -->
