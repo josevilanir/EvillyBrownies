@@ -18,7 +18,7 @@ function lerp(a, b, t) {
 }
 
 // ── Single animated image ──────────────────────────────────────────────────────
-function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay }) {
+function FloatingImage({ index, src, alt, initial, target, scrollY, scrollStart, scrollEnd, entryDelay }) {
   // Raw values — RAF writes to these
   const xRaw      = useMotionValue(initial.x);
   const yRaw      = useMotionValue(initial.y);
@@ -33,12 +33,17 @@ function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scroll
   const sizeMv   = useSpring(sizeRaw,   SPRING);
   const rotateMv = useSpring(rotateRaw, SPRING);
 
-  const startTimeRef = useRef(null);
-  const rafRef       = useRef(null);
-  const aliveRef     = useRef(true);
+  const startTimeRef  = useRef(null);
+  const rafRef        = useRef(null);
+  const aliveRef      = useRef(true);
+  const landedRef     = useRef(false); // tracks handoff state to avoid redundant DOM writes
 
   useEffect(() => {
     aliveRef.current = true;
+    landedRef.current = false;
+
+    // Resolve the matching thumbnail element once
+    const thumbEl = document.querySelector(`[data-menu-thumbnail="${index}"]`);
 
     // Fade-in staggered by entryDelay
     const fadeTimer = setTimeout(() => {
@@ -52,6 +57,20 @@ function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scroll
       const span     = Math.max(1, scrollEnd - scrollStart);
       const progress = Math.max(0, Math.min(1, (s - scrollStart) / span));
       const eased    = easeInOutCubic(progress);
+
+      const landed = progress >= 1;
+
+      // Handoff: brownie hides ↔ static thumbnail shows — instant swap, no fade
+      if (landed !== landedRef.current) {
+        landedRef.current = landed;
+        if (thumbEl) thumbEl.style.opacity = landed ? '1' : '0';
+      }
+
+      if (landed) {
+        opMv.set(0);
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
 
       // Bob weight: 1.0 at rest, smoothly fades to 0 by 12% scroll progress
       const bobWeight = Math.max(0, 1 - progress / 0.12);
@@ -75,12 +94,8 @@ function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scroll
       sizeRaw.set(lerp(initial.size, target.size, eased));
       rotateRaw.set(lerp(initial.rotate, 0, eased) + bobRotate);
 
-      // Opacity: hold near 1 while flying, fade out on final approach so real thumbnail takes over
-      if (progress < 0.75) {
-        opMv.set(lerp(0.93, 1.0, progress / 0.75));
-      } else {
-        opMv.set(lerp(1.0, 0, (progress - 0.75) / 0.25));
-      }
+      // Opacity: fade in, then hold at 1 during flight
+      opMv.set(lerp(0.93, 1.0, Math.min(progress / 0.75, 1)));
 
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -91,6 +106,8 @@ function FloatingImage({ src, alt, initial, target, scrollY, scrollStart, scroll
       aliveRef.current = false;
       clearTimeout(fadeTimer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      // Reset thumbnail on unmount
+      if (thumbEl) thumbEl.style.opacity = '0';
     };
   }, [scrollY, initial, target, scrollStart, scrollEnd, entryDelay]); // eslint-disable-line
 
@@ -236,6 +253,7 @@ export default function FloatingBrownies() {
       {PRODUCTS.map((p, i) => (
         <FloatingImage
           key={p.src}
+          index={i}
           src={p.src}
           alt={p.alt}
           initial={cfg.initials[i]}

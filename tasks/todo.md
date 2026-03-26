@@ -35,6 +35,10 @@
 - [x] Create the `Comparison` section component and add it before Instagram <!-- id: 42 -->
 - [x] Verify UI and functionality <!-- id: 43 -->
 
+## Animation Improvements
+- [ ] Sync Floating Brownies flight with Menu thumbnails (landing instead of fading) <!-- id: 60 -->
+- [ ] Verify seamless transition and docking <!-- id: 61 -->
+
 ## Brand Asset Update
 - [x] Replace default Vercel favicon with brownie icon <!-- id: 50 -->
 - [x] Verify icon in development server <!-- id: 51 -->

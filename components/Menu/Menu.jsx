@@ -1,6 +1,6 @@
 'use client';
-import { useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 const products = [
@@ -26,19 +26,9 @@ const products = [
 
 function MenuItem({ product, index }) {
   const [hovered, setHovered] = useState(false);
-  const rowRef = useRef(null);
-
-  // Thumbnail fades in as the row scrolls from 85% → 45% of the viewport height.
-  // This timing naturally coincides with the floating brownie "landing" in the thumbnail.
-  const { scrollYProgress } = useScroll({
-    target: rowRef,
-    offset: ['start 0.85', 'start 0.45'],
-  });
-  const thumbOpacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <motion.div
-      ref={rowRef}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -56,7 +46,7 @@ function MenuItem({ product, index }) {
         transition: 'background 0.3s ease',
       }}
     >
-      {/* Thumbnail — starts invisible, blooms as the floating brownie "lands" */}
+      {/* Thumbnail — hidden static image; floating brownie lands here */}
       <motion.div
         data-menu-thumbnail={index}
         style={{
@@ -65,7 +55,7 @@ function MenuItem({ product, index }) {
           position: 'relative',
           flexShrink: 0,
           overflow: 'hidden',
-          opacity: thumbOpacity,
+          opacity: 0,
         }}
       >
         <motion.div
