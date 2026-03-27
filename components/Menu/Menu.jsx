@@ -35,6 +35,7 @@ function MenuItem({ product, index }) {
       transition={{ delay: index * 0.1, duration: 0.5 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      suppressHydrationWarning
       style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -49,6 +50,7 @@ function MenuItem({ product, index }) {
       {/* Thumbnail — hidden static image; floating brownie lands here */}
       <motion.div
         data-menu-thumbnail={index}
+        suppressHydrationWarning
         style={{
           width: '52px',
           height: '52px',
@@ -61,6 +63,7 @@ function MenuItem({ product, index }) {
         <motion.div
           animate={{ scale: hovered ? 1 : 0.92 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
+          suppressHydrationWarning
           style={{ width: '100%', height: '100%', position: 'relative' }}
         >
           <Image
@@ -72,9 +75,9 @@ function MenuItem({ product, index }) {
           />
         </motion.div>
       </motion.div>
-
+ 
       {/* Title + description */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1 }} suppressHydrationWarning>
         <h3 style={{
           fontFamily: 'var(--font-serif)',
           fontSize: '1.1rem',
@@ -96,17 +99,20 @@ function MenuItem({ product, index }) {
           {product.description}
         </p>
       </div>
-
+ 
       {/* Price */}
-      <div style={{
-        fontFamily: 'var(--font-serif)',
-        fontStyle: 'italic',
-        fontSize: '1.05rem',
-        fontWeight: 400,
-        color: 'var(--gold)',
-        letterSpacing: '0.02em',
-        flexShrink: 0,
-      }}>
+      <div 
+        suppressHydrationWarning
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '1.05rem',
+          fontWeight: 400,
+          color: 'var(--gold)',
+          letterSpacing: '0.02em',
+          flexShrink: 0,
+        }}
+      >
         {product.price}
       </div>
     </motion.div>

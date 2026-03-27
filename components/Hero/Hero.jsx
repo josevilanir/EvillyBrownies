@@ -13,27 +13,28 @@ export default function Hero() {
         position: 'relative',
         paddingTop: 'calc(var(--spacing-xl) + 72px)',
         overflow: 'hidden',
-        backgroundColor: 'var(--background)',
+        backgroundColor: '#c8b39e',
       }}
+      suppressHydrationWarning
     >
-      {/* Oversized BROWNIE watermark — warm brown at 3% */}
-      <div style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontFamily: 'var(--font-serif)',
-        fontSize: 'clamp(8rem, 20vw, 22rem)',
-        fontWeight: 900,
-        color: 'rgba(90, 45, 15, 0.03)',
-        lineHeight: 1,
-        userSelect: 'none',
-        pointerEvents: 'none',
-        zIndex: 0,
-        letterSpacing: '-0.02em',
-        whiteSpace: 'nowrap',
-      }}>
-        BROWNIE
+      {/* Background logo watermark — blurred and subtle */}
+      <div 
+        className="absolute inset-0 flex justify-center z-0 pointer-events-none select-none overflow-hidden items-start pt-[18vh] max-md:items-end max-md:pt-0 max-md:pb-0"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 0.25, scale: 1 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: "url('/images/background.png')",
+            backgroundSize: 'contain',
+            backgroundPosition: 'center 55%',
+            backgroundRepeat: 'no-repeat',
+            filter: 'blur(3.5px)',
+          }}
+        />
       </div>
 
       {/* Left info sidebar */}
