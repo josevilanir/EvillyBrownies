@@ -13,6 +13,8 @@ interface TeamMemberCardProps {
   firstName?: string
   lastName?: string
   imageUrl?: string
+  imageScale?: number
+  imagePosition?: string
   description?: string
   className?: string
 }
@@ -23,6 +25,8 @@ export default function TeamMemberCard({
   firstName = 'Jennie',
   lastName = 'Garcia',
   imageUrl = 'https://images.unsplash.com/photo-1526510747491-58f928ec870f?fm=jpg&q=60',
+  imageScale = 1,
+  imagePosition = 'top',
   description = 'Jennie is a skilled developer with expertise in modern web technologies and a passion for creating seamless user experiences.',
   className,
 }: TeamMemberCardProps) {
@@ -99,11 +103,12 @@ export default function TeamMemberCard({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'top',
+              objectPosition: imagePosition,
+              transform: `scale(${imageScale})`,
               transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.05)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform = `scale(${imageScale + 0.05})` }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform = `scale(${imageScale})` }}
           />
         </motion.div>
 

@@ -28,6 +28,8 @@ export default function About() {
             firstName="Evilly"
             lastName="Souza"
             imageUrl="/images/evilly-souza.png"
+            imageScale={1.4}
+            imagePosition="center 30%"
             description="A paixão pelo chocolate artesanal começou no coração da sua cozinha. Cada brownie é uma obra de arte — a intensidade do cacau com a delicadeza do preparo manual. Chocolate de verdade, ingredientes frescos e aquele toque de carinho que você sente em cada mordida."
           />
         </motion.div>
