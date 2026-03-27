@@ -32,7 +32,7 @@ export default function Hero() {
             backgroundSize: 'contain',
             backgroundPosition: 'center 55%',
             backgroundRepeat: 'no-repeat',
-            filter: 'blur(3.5px)',
+            filter: 'blur(2.7px)',
           }}
         />
       </div>
