@@ -6,19 +6,19 @@ import Image from 'next/image';
 const products = [
   {
     title: 'Brownie no Pote',
-    price: 'R$ 10,00',
+    price: 'R$ 16,00',
     description: 'Cremoso, feito no pote, pronto para comer.',
     image: '/images/brownie-pote.png',
   },
   {
     title: 'Brownie Tradicional',
-    price: 'R$ 4,00',
+    price: 'R$ 8,00',
     description: 'Clássico, crocante por fora, macio por dentro.',
     image: '/images/brownie-tradicional.png',
   },
   {
     title: 'Mini Brownie',
-    price: 'R$ 2,00',
+    price: 'R$ 3,50',
     description: 'Pequeno, ideal para lembrancinhas, vários sabores.',
     image: '/images/mini-brownie.png',
   },

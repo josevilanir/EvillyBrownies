@@ -27,7 +27,7 @@ export default function Comparison() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-6 w-full text-center"
           >
-            Por Que Somos <span className="text-primary italic font-serif">Diferentes?</span>
+            Tem coisas que o mercado não consegue copiar.
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -36,7 +36,7 @@ export default function Comparison() {
             transition={{ delay: 0.2 }}
             className="text-foreground/70 text-lg font-sans max-w-xl mx-auto text-center text-balance"
           >
-            Não é apenas sobre chocolate. É sobre textura, intensidade e o segredo que só o Evilly Brownies entrega. Deslize para ver a diferença.
+            Alguns produtos simplesmente não precisam se explicar.
           </motion.p>
         </div>
 
