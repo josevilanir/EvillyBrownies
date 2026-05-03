@@ -197,7 +197,7 @@ export default function TeamMemberCard({
             </motion.div>
 
             {/* Bio */}
-            <p
+            <div
               className="team-member-bio"
               style={{
                 flex: 1,
@@ -208,8 +208,12 @@ export default function TeamMemberCard({
                 textAlign: isPositionRight ? 'right' : 'left',
               }}
             >
-              {description}
-            </p>
+              {description?.split('\n\n').map((paragraph, idx, arr) => (
+                <p key={idx} style={{ marginBottom: idx !== arr.length - 1 ? '1em' : 0 }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
