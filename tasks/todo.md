@@ -48,4 +48,12 @@
 - [x] P2: Migrar <img>/CSS-bg crus para next/image + priority no LCP <!-- id: 71 -->
 - [x] P3: Migrar fontes Google (@import) para next/font (self-host, sem CLS) <!-- id: 72 -->
 - [x] P4: LazyMotion + componente `m` (framer-motion 211K -> ~101K chunk) <!-- id: 73 -->
-- [ ] P5: Limpeza de repo (diff.patch, next.config, .gitignore) <!-- id: 74 -->
+- [x] P5: Limpeza de repo (diff.patch removido, next.config com avif/webp) <!-- id: 74 -->
+
+### Resultado (auditoria de performance)
+- Imagens: 11 MB -> 1.4 MB (-87%)
+- Todas as imagens via next/image (avif/webp, lazy, priority no LCP)
+- Fontes self-hosted via next/font (sem render-blocking, sem CLS)
+- framer-motion: chunk 211K -> ~101K (LazyMotion + `m`)
+- next.config: avif+webp habilitados; diff.patch removido
+- Pendente (decisão do usuário): mover `tasks/` para .gitignore (requer `git rm --cached`)
