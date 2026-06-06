@@ -109,7 +109,10 @@ export default function Instagram() {
                   src={photo}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: 'cover' }}
+                  style={{ 
+                    objectFit: 'cover',
+                    transform: photo === '/images/brownieinsta2.jpg' ? 'scale(1.2)' : 'none'
+                  }}
                   alt={`Post ${i + 1} no Instagram`}
                 />
               </motion.div>
