@@ -180,7 +180,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.9 }}
               style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}
             >
-              <a href="https://wa.me/55000000000" className="btn-primary btn-whatsapp">
+              <a href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies" className="btn-primary btn-whatsapp">
                 Fazer pedido
               </a>
               <a href="#menu" style={{

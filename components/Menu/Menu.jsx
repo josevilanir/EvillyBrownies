@@ -181,7 +181,7 @@ export default function Menu() {
           transition={{ delay: 0.4 }}
           style={{ marginTop: 'var(--spacing-md)' }}
         >
-          <a href="https://wa.me/55000000000" className="btn-primary btn-whatsapp">
+          <a href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies" className="btn-primary btn-whatsapp">
             Fazer pedido via WhatsApp
           </a>
         </motion.div>

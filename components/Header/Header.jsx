@@ -91,7 +91,7 @@ export default function Header() {
               {link.label}
             </a>
           ))}
-          <a href="https://wa.me/55000000000" className="btn-primary" style={{ fontSize: '0.7rem', padding: '0.65rem 1.4rem' }}
+          <a href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies" className="btn-primary" style={{ fontSize: '0.7rem', padding: '0.65rem 1.4rem' }}
           onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--primary)'; }}
           onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'var(--foreground)'; }}
           >
@@ -142,7 +142,7 @@ export default function Header() {
                 {link.label}
               </a>
             ))}
-            <a href="https://wa.me/55000000000" onClick={() => setMobileOpen(false)} className="btn-primary" style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+            <a href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies" onClick={() => setMobileOpen(false)} className="btn-primary" style={{ textAlign: 'center', marginTop: '0.5rem' }}>
               Pedir agora
             </a>
           </motion.div>

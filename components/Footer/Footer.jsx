@@ -54,7 +54,7 @@ export default function Footer() {
             </p>
 
             <a
-              href="https://wa.me/55000000000"
+              href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies"
               className="btn-whatsapp"
               style={{
                 display: 'inline-flex',
