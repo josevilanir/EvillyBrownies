@@ -126,7 +126,7 @@ export default function Footer() {
             {/* Social */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <a
-                href="https://instagram.com/evillyysouzaaa"
+                href="https://instagram.com/evillybrownie"
                 style={{
                   width: '38px', height: '38px',
                   border: '1px solid rgba(166, 124, 82, 0.3)',

@@ -54,7 +54,7 @@ export default function Instagram() {
               Instagram
             </h2>
             <a
-              href="https://instagram.com/evillyysouzaaa"
+              href="https://instagram.com/evillybrownie"
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '0.75rem',
@@ -66,7 +66,7 @@ export default function Instagram() {
                 transition: 'color 0.3s ease',
               }}
             >
-              @evillyysouzaaa
+              @evillybrownie
             </a>
           </div>
         </motion.div>
@@ -136,7 +136,7 @@ export default function Instagram() {
         {/* CTA */}
         <div>
           <a
-            href="https://instagram.com/evillyysouzaaa"
+            href="https://instagram.com/evillybrownie"
             className="btn-primary"
             style={{
               display: 'inline-flex',
