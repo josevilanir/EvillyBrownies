@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function Hero() {
   return (
@@ -26,15 +27,24 @@ export default function Hero() {
           animate={{ opacity: 0.25, scale: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
           style={{
+            position: 'relative',
             width: '100%',
             height: '100%',
-            backgroundImage: "url('/images/background.png')",
-            backgroundSize: 'contain',
-            backgroundPosition: 'center 55%',
-            backgroundRepeat: 'no-repeat',
             filter: 'blur(2.7px)',
           }}
-        />
+        >
+          <Image
+            src="/images/background.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            style={{
+              objectFit: 'contain',
+              objectPosition: 'center 55%',
+            }}
+          />
+        </motion.div>
       </div>
 
       {/* Left info sidebar */}

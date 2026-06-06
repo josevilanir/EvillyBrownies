@@ -2,6 +2,7 @@
 
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -96,12 +97,12 @@ export default function TeamMemberCard({
               pointerEvents: 'none',
             }}
           />
-          <img
+          <Image
             src={imageUrl}
             alt={fullName}
+            fill
+            sizes="360px"
             style={{
-              width: '100%',
-              height: '100%',
               objectFit: 'cover',
               objectPosition: imagePosition,
               transform: `scale(${imageScale})`,

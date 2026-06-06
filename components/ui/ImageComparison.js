@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -72,10 +73,12 @@ export const ImageComparison = ({
     >
       {/* Before Image (Bottom Layer - Comparison/Common) */}
       <div className="absolute inset-0 w-full h-full bg-neutral-100">
-        <img
+        <Image
           src={beforeImage}
           alt={altBefore}
-          className="w-full h-full object-cover grayscale-[0.3]"
+          fill
+          sizes="(max-width: 768px) 100vw, 700px"
+          className="object-cover grayscale-[0.3]"
           draggable="false"
         />
       </div>
@@ -85,10 +88,12 @@ export const ImageComparison = ({
         className="absolute inset-0 w-full h-full overflow-hidden transition-none"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
-        <img
+        <Image
           src={afterImage}
           alt={altAfter}
-          className="w-full h-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 700px"
+          className="object-cover"
           draggable="false"
         />
       </div>
