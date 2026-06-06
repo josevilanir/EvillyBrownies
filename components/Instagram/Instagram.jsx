@@ -4,18 +4,16 @@ import Image from 'next/image';
 import { Camera as InstagramIcon, Heart } from 'lucide-react';
 
 const photos = [
-  '/images/hero-brownie.png',
-  '/images/brownie-pote.png',
-  '/images/brownie-tradicional.png',
-  '/images/mini-brownie.png',
+  '/images/brownieinsta2.jpg',
+  '/images/brownieinsta3.jpg',
+  '/images/brownieinsta1.jpg',
 ];
 
-// Masonry layout: big left (2 rows), 2 small right, wide bottom
+// Masonry layout: 2 small top, big bottom (full width)
 const photoLayouts = [
-  { gridColumn: '1', gridRow: '1 / span 2', paddingBottom: '0', height: '100%', minHeight: '420px' },
+  { gridColumn: '1', gridRow: '1', paddingBottom: '100%', height: 0 },
   { gridColumn: '2', gridRow: '1', paddingBottom: '100%', height: 0 },
-  { gridColumn: '3', gridRow: '1', paddingBottom: '100%', height: 0 },
-  { gridColumn: '2 / span 2', gridRow: '2', paddingBottom: '50%', height: 0 },
+  { gridColumn: '1 / span 2', gridRow: '2', paddingBottom: '75%', height: 0 },
 ];
 
 export default function Instagram() {
@@ -76,7 +74,7 @@ export default function Instagram() {
         {/* Masonry grid */}
         <div className="instagram-masonry" style={{
           display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr',
+          gridTemplateColumns: '1fr 1fr',
           gridTemplateRows: 'auto auto',
           gap: '8px',
           marginBottom: 'var(--spacing-md)',
@@ -110,7 +108,7 @@ export default function Instagram() {
                 <Image
                   src={photo}
                   fill
-                  sizes="(max-width: 768px) 50vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   style={{ objectFit: 'cover' }}
                   alt={`Post ${i + 1} no Instagram`}
                 />
