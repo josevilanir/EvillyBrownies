@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Image from 'next/image';
 
 const products = [
@@ -28,7 +28,7 @@ function MenuItem({ product, index }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -48,7 +48,7 @@ function MenuItem({ product, index }) {
       }}
     >
       {/* Thumbnail — hidden static image; floating brownie lands here */}
-      <motion.div
+      <m.div
         data-menu-thumbnail={index}
         suppressHydrationWarning
         style={{
@@ -60,7 +60,7 @@ function MenuItem({ product, index }) {
           opacity: 0,
         }}
       >
-        <motion.div
+        <m.div
           animate={{ scale: hovered ? 1 : 0.92 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
           suppressHydrationWarning
@@ -73,8 +73,8 @@ function MenuItem({ product, index }) {
             style={{ objectFit: 'cover', borderRadius: '8px' }}
             alt={product.title}
           />
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
  
       {/* Title + description */}
       <div style={{ flex: 1 }} suppressHydrationWarning>
@@ -115,7 +115,7 @@ function MenuItem({ product, index }) {
       >
         {product.price}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -125,7 +125,7 @@ export default function Menu() {
       <div className="container">
 
         {/* Section header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -161,7 +161,7 @@ export default function Menu() {
               marginTop: '0.4em',
             }}>artesanal</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         {/* Top rule in gold */}
         <div style={{ borderTop: '1px solid var(--text-main)', paddingTop: '0' }} />
@@ -174,7 +174,7 @@ export default function Menu() {
         </div>
 
         {/* CTA */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -184,7 +184,7 @@ export default function Menu() {
           <a href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies" className="btn-primary btn-whatsapp">
             Fazer pedido via WhatsApp
           </a>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

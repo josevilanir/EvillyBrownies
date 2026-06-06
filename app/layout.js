@@ -1,5 +1,6 @@
 import './globals.css'
 import { Lora, Libre_Baskerville } from 'next/font/google'
+import MotionProvider from '../components/MotionProvider'
 
 const lora = Lora({
   subsets: ['latin'],
@@ -30,7 +31,9 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR" className={`${lora.variable} ${libreBaskerville.variable}`}>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   )
 }

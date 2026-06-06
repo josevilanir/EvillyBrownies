@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Image from 'next/image';
 import { Camera as InstagramIcon, Heart } from 'lucide-react';
 
@@ -25,7 +25,7 @@ export default function Instagram() {
       <div className="container">
 
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -69,7 +69,7 @@ export default function Instagram() {
               @evillybrownie
             </a>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Masonry grid */}
         <div className="instagram-masonry" style={{
@@ -80,7 +80,7 @@ export default function Instagram() {
           marginBottom: 'var(--spacing-md)',
         }}>
           {photos.map((photo, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, scale: 0.96 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -100,7 +100,7 @@ export default function Instagram() {
                 backgroundColor: 'var(--secondary)',
               }}
             >
-              <motion.div
+              <m.div
                 variants={{ rest: { scale: 1 }, hover: { scale: 1.05 } }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 style={{ position: 'absolute', inset: 0 }}
@@ -115,10 +115,10 @@ export default function Instagram() {
                   }}
                   alt={`Post ${i + 1} no Instagram`}
                 />
-              </motion.div>
+              </m.div>
 
               {/* Hover overlay */}
-              <motion.div
+              <m.div
                 variants={{ rest: { opacity: 0 }, hover: { opacity: 1 } }}
                 transition={{ duration: 0.2 }}
                 style={{
@@ -131,8 +131,8 @@ export default function Instagram() {
                 }}
               >
                 <Heart size={28} color="white" fill="white" />
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           ))}
         </div>
 

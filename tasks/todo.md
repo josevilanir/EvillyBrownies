@@ -47,5 +47,5 @@
 - [x] P1: Comprimir/redimensionar imagens (11MB -> 1.4MB, -87%) com sharp <!-- id: 70 -->
 - [x] P2: Migrar <img>/CSS-bg crus para next/image + priority no LCP <!-- id: 71 -->
 - [x] P3: Migrar fontes Google (@import) para next/font (self-host, sem CLS) <!-- id: 72 -->
-- [ ] P4: Reduzir framer-motion em componentes estaticos <!-- id: 73 -->
+- [x] P4: LazyMotion + componente `m` (framer-motion 211K -> ~101K chunk) <!-- id: 73 -->
 - [ ] P5: Limpeza de repo (diff.patch, next.config, .gitignore) <!-- id: 74 -->

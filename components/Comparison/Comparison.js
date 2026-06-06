@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ImageComparison } from '../ui/ImageComparison';
 
 export default function Comparison() {
@@ -12,15 +12,15 @@ export default function Comparison() {
 
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
         <div className="w-full max-w-4xl text-center mb-16 mx-auto flex flex-col items-center">
-          <motion.span 
+          <m.span 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-4 block w-full text-center"
           >
             A Excelência em Cada Mordida
-          </motion.span>
-          <motion.h2 
+          </m.span>
+          <m.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -28,8 +28,8 @@ export default function Comparison() {
             className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-6 w-full text-center"
           >
             Tem coisas que o mercado não consegue copiar.
-          </motion.h2>
-          <motion.p 
+          </m.h2>
+          <m.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -37,29 +37,29 @@ export default function Comparison() {
             className="text-foreground/70 text-lg font-sans max-w-xl mx-auto text-center text-balance"
           >
             Alguns produtos simplesmente não precisam se explicar.
-          </motion.p>
+          </m.p>
         </div>
 
         <div className="w-full max-w-4xl relative group mx-auto flex flex-col items-center">
           {/* Labels outside the card - centered and better aligned */}
           <div className="flex justify-between w-full mb-6 px-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary/60">
-            <motion.span 
+            <m.span 
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
               Comum
-            </motion.span>
-            <motion.span 
+            </m.span>
+            <m.span 
               initial={{ opacity: 0, x: 10 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
               Evilly Brownie
-            </motion.span>
+            </m.span>
           </div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -72,7 +72,7 @@ export default function Comparison() {
               altBefore="Evilly Brownie"
               altAfter="Comum"
             />
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="mt-28 flex flex-nowrap justify-center gap-6 md:gap-24 text-center">

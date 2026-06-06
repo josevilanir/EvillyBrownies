@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import Image from 'next/image'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -35,7 +35,7 @@ export default function TeamMemberCard({
   const isPositionRight = position === 'right'
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -43,7 +43,7 @@ export default function TeamMemberCard({
       className={className}
     >
       {/* Job position label */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
@@ -62,7 +62,7 @@ export default function TeamMemberCard({
         >
           {jobPosition}
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Main row */}
       <div
@@ -74,7 +74,7 @@ export default function TeamMemberCard({
         }}
       >
         {/* Portrait */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.95, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
@@ -111,10 +111,10 @@ export default function TeamMemberCard({
             onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform = `scale(${imageScale + 0.05})` }}
             onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform = `scale(${imageScale})` }}
           />
-        </motion.div>
+        </m.div>
 
         {/* Info block — pulled to overlap image edge */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: isPositionRight ? -40 : 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -156,7 +156,7 @@ export default function TeamMemberCard({
             }}
           >
             {/* Circular CTA */}
-            <motion.div
+            <m.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className='group'
@@ -195,7 +195,7 @@ export default function TeamMemberCard({
                   color: 'var(--text-light)',
                 }}
               />
-            </motion.div>
+            </m.div>
 
             {/* Bio */}
             <div
@@ -216,8 +216,8 @@ export default function TeamMemberCard({
               ))}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

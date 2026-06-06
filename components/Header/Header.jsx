@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -37,7 +37,7 @@ export default function Header() {
 
   return (
     <>
-      <motion.header
+      <m.header
         initial={{ y: -80 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
@@ -107,12 +107,12 @@ export default function Header() {
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
-      </motion.header>
+      </m.header>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -145,7 +145,7 @@ export default function Header() {
             <a href="https://wa.me/5584991698470?text=Ola%2C%20gostaria%20de%20fazer%20uma%20encomenda%20de%20brownies" onClick={() => setMobileOpen(false)} className="btn-primary" style={{ textAlign: 'center', marginTop: '0.5rem' }}>
               Pedir agora
             </a>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Image from 'next/image';
 
 export default function Hero() {
@@ -22,7 +22,7 @@ export default function Hero() {
       <div 
         className="absolute inset-0 flex justify-center z-0 pointer-events-none select-none overflow-hidden items-start pt-[18vh] max-md:items-end max-md:pt-0 max-md:pb-0"
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 0.25, scale: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
@@ -44,7 +44,7 @@ export default function Hero() {
               objectPosition: 'center 55%',
             }}
           />
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Left info sidebar */}
@@ -108,13 +108,13 @@ export default function Hero() {
         }}>
 
           {/* ── Text ── */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
           >
             {/* Eyebrow */}
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -129,10 +129,10 @@ export default function Hero() {
               }}
             >
               Evilly Souza
-            </motion.p>
+            </m.p>
 
             <h1 style={{ marginBottom: '1.8rem', lineHeight: 0.92 }}>
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.35 }}
@@ -146,9 +146,9 @@ export default function Hero() {
                 }}
               >
                 Brownie
-              </motion.span>
+              </m.span>
 
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.5 }}
@@ -164,10 +164,10 @@ export default function Hero() {
                 }}
               >
                 artesanal
-              </motion.span>
+              </m.span>
             </h1>
 
-            <motion.p
+            <m.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -182,9 +182,9 @@ export default function Hero() {
               }}
             >
               Brownies artesanais feitos com chocolate de verdade. Cada mordida, um momento de felicidade.
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
@@ -209,8 +209,8 @@ export default function Hero() {
               }}>
                 Ver cardápio ↓
               </a>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           {/* Right column — kept empty so floating brownies occupy this space */}
           <div aria-hidden="true" />

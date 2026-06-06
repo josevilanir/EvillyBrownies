@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import TeamMemberCard from '../ui/team-member-card';
 
 export default function About() {
@@ -16,7 +16,7 @@ export default function About() {
       <div className="container">
 
         {/* Editorial team member card — renders in dark context */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -32,10 +32,10 @@ export default function About() {
             imagePosition="center 30%"
             description={`Tudo começou dentro de uma cozinha, e com uma vontade que ninguém ensina na escola: a de conquistar o próprio espaço. Foi com brownie na mochila e aquele frio na barriga de quem está começando do zero, que nascemos. Sem loja, sem estrutura, só o produto, as mãos e a certeza de que aquilo era diferente. E as pessoas sentiram.\n\nNão demorou muito pra virar o assunto da escola: alguém sempre estava procurando, independente do dia ou da hora. Não era só um doce. Era uma receita que veio da família, passada de mãe pra filha, com aquele cuidado que não se aprende em curso, se herda.\n\nDesde 2023, o que era renda extra virou propósito. O que era paixão virou marca. E o que sempre foi tradição, agora chega até você — com a mesma entrega de sempre, porque brownie feito com amor tem gosto que a gente não esquece.`}
           />
-        </motion.div>
+        </m.div>
 
         {/* CTA — gold on black */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -64,7 +64,7 @@ export default function About() {
           >
             Fazer um pedido
           </a>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

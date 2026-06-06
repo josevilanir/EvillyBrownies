@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Camera, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="container">
 
           {/* CTA block */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -88,7 +88,7 @@ export default function Footer() {
             }}>
               Atendemos por encomenda
             </p>
-          </motion.div>
+          </m.div>
 
           <hr style={{ border: 'none', borderTop: '1px solid rgba(166, 124, 82, 0.12)', margin: '0 0 var(--spacing-md)' }} />
 

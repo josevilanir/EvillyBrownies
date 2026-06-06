@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { useMotionValue, useSpring, useScroll, motion } from 'framer-motion';
+import { useMotionValue, useSpring, useScroll, m } from 'framer-motion';
 import Image from 'next/image';
 
 const PRODUCTS = [
@@ -112,7 +112,7 @@ function FloatingImage({ index, src, alt, initial, target, scrollY, scrollStart,
   }, [scrollY, initial, target, scrollStart, scrollEnd, entryDelay]); // eslint-disable-line
 
   return (
-    <motion.div
+    <m.div
       style={{
         position:      'fixed',
         left:          xMv,
@@ -139,7 +139,7 @@ function FloatingImage({ index, src, alt, initial, target, scrollY, scrollStart,
           display: 'block',
         }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 

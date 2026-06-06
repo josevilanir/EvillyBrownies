@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useEffect, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 
 function CountUp({ to, suffix = '' }) {
   const [count, setCount] = useState(0);
@@ -48,7 +48,7 @@ export default function Stats() {
           gap: '1rem',
         }}>
           {stats.map((stat, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export default function Stats() {
               }}>
                 {stat.label}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
