@@ -46,6 +46,6 @@
 ## Performance Optimization (auditoria 2026-06-06) — uma por commit
 - [x] P1: Comprimir/redimensionar imagens (11MB -> 1.4MB, -87%) com sharp <!-- id: 70 -->
 - [x] P2: Migrar <img>/CSS-bg crus para next/image + priority no LCP <!-- id: 71 -->
-- [ ] P3: Migrar fontes Google (@import) para next/font <!-- id: 72 -->
+- [x] P3: Migrar fontes Google (@import) para next/font (self-host, sem CLS) <!-- id: 72 -->
 - [ ] P4: Reduzir framer-motion em componentes estaticos <!-- id: 73 -->
 - [ ] P5: Limpeza de repo (diff.patch, next.config, .gitignore) <!-- id: 74 -->
